@@ -1,0 +1,64 @@
+/* styles.css */
+
+/* General Body Styling */
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 20px;
+}
+
+/* Header Styling */
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #343a40;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+table thead th {
+    background-color: #343a40;
+    color: #fff;
+    text-align: center;
+    font-weight: bold;
+}
+
+table tbody td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+table tbody tr:nth-child(odd) {
+    background-color: #e9ecef;
+}
+
+table tbody tr:hover {
+    background-color: #ced4da;
+}
+
+/* Link Styling */
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 24px;
+    }
+
+    table thead th, table tbody td {
+        font-size: 14px;
+    }
+}
