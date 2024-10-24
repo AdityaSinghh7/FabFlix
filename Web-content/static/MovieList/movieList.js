@@ -13,7 +13,7 @@ function handleMovieListResult(resultData){
         let starsHTML = '';
 
         starsArray.forEach(star => {
-            starsHTML += "<a href='static/single-star.html?starId=" + encodeURIComponent(star.id) + "'>" + star.name + "</a>, ";
+            starsHTML += "<a href=" + encodeURIComponent(star.id) + "'../singleStar.html?starId='>" + star.name + "</a>, ";
         });
 
 
@@ -21,7 +21,7 @@ function handleMovieListResult(resultData){
         console.log("Movie ID:", movieId);
         let rowHTML = "";
         rowHTML += "<tr>";
-        rowHTML += "<td><a href='static/SingleMovie.html?movieId=" + encodeURIComponent(movieId) + "'>" + title + "</a></td>";
+        rowHTML += "<td><a href=" + encodeURIComponent(movieId) + "'../singleMovie.html?movieId='>" + title + "</a></td>";
         rowHTML += "<td>" + resultData[i]["year"] + "</td>";
         rowHTML += "<td>" + resultData[i]["director"] + "</td>";
         rowHTML += "<td>" + resultData[i]["genres"] + "</td>";
@@ -36,9 +36,8 @@ function handleMovieListResult(resultData){
 jQuery.ajax({
     dataType: "json",
     method: "GET",
-    url: "api/movies",
+    url: "/FabFlix_war/api/movies",
     success: (resultData) => {
-        console.log(resultData);
         handleMovieListResult(resultData);
     }
 });

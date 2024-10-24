@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@1,700&display=swap">
+
+    <title>Search Page - FabFlix</title>
+</head>
+<body>
+<div class="logo-container">
+    <img src="../Images/FabFlix-lightMode.svg" alt="FabFlix Logo" class="fabflix-logo">
+</div>
+
+<div class="top-right-buttons">
+    <button id="logout-button">Logout</button>
+    <button id="dark-mode-toggle">Toggle Theme</button>
+</div>
+
+<h1 class="search-header">Search Page: FabFlix</h1>
+
+<div class="search-container">
+    <input type="text" id="title" placeholder="Enter movie title..." />
+    <input type="text" id="year" placeholder="Enter release year..." />
+    <input type="text" id="director" placeholder="Enter director's name..." />
+    <input type="text" id="star" placeholder="Enter star's name..." />
+    <button class="enter-button" onclick="redirectToMovieList()">Enter</button>
+</div>
+
+<script src="../LoginPage/darkMode.js"></script>
+</body>

@@ -29,7 +29,7 @@ if (starId) {
                 data.movies.forEach(movie => {
                     let li = document.createElement('li');
                     let a = document.createElement('a');
-                    a.href = 'SingleMovie.html?movieId=' + encodeURIComponent(movie.id);
+                    a.href = 'singleMovie.html?movieId=' + encodeURIComponent(movie.id);
                     a.textContent = movie.title;
                     li.appendChild(a);
                     moviesList.appendChild(li);

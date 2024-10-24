@@ -65,13 +65,6 @@
                             <directory>${basedir}/Web-content/static</directory>
                             <targetPath>static</targetPath>
                         </resource>
-                        <resource>
-                            <directory>${basedir}/Web-content/static</directory>
-                            <includes>
-                                <include>MovieListIndex.html</include>
-                            </includes>
-                            <targetPath>/</targetPath>
-                        </resource>
                     </webResources>
                 </configuration>
             </plugin>
