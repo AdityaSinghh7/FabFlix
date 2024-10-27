@@ -48,7 +48,23 @@ body {
     transition: background-color 0.3s, color 0.3s;
 }
 
+#cart-button{
+    padding: 10px 20px;
+    background-color: #D60E0A;
+    color: #FFE6E8;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s, color 0.3s;
+}
+
 #logout-button:hover {
+    background-color: #FF5C58;
+    color: #14110F;
+}
+
+#cart-button:hover{
     background-color: #FF5C58;
     color: #14110F;
 }
@@ -115,7 +131,6 @@ body.dark-mode .welcome-text {
 
 body.dark-mode .main-button {
     background-color: #D60E0A;
-    color: #14110F;
 }
 
 body.dark-mode .main-button:hover {
@@ -124,16 +139,22 @@ body.dark-mode .main-button:hover {
 
 body.dark-mode #logout-button {
     background-color: #D60E0A;
-    color: #14110F;
+}
+
+body.dark-mode #cart-button{
+    background-color: #D60E0A;
 }
 
 body.dark-mode #logout-button:hover {
     background-color: #FF5C58;
 }
 
+body.dark-mode #cart-button:hover{
+    background-color: #FF5C58;
+}
+
 body.dark-mode #dark-mode-toggle {
     background-color: #D60E0A;
-    color: #14110F;
 }
 
 body.dark-mode #dark-mode-toggle:hover {

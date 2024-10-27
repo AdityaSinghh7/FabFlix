@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="logo-container">
+    <a href="../MainPage/mainPage.html">
+        <img src="../Images/FabFlix-lightMode.svg" alt="FabFlix Logo" class="fabflix-logo">
+    </a>
+</div>
+
+<button id="dark-mode-toggle">Toggle Theme</button>
+
+<h1>Shopping Cart</h1>
+
+<div id="cart-items-container" class="cart-container">
+</div>
+
+<div class="total-container">
+    <span>Total Price: $<span id="total-price">0.00</span></span>
+</div>
+
+<button id="proceed-to-payment" class="navigation-button">Proceed to Payment</button>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="cart.js"></script>
+<script src="../dark-mode.js"></script>
+</body>
+</html>

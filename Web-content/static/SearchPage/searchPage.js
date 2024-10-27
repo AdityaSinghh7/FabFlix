@@ -11,9 +11,22 @@ $(document).ready(function() {
             }
         });
     });
+
+    $('.search-container input').on('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            redirectToMovieList();
+        }
+    });
+    $('#cart-button').click(function() {
+        window.location.href = '../CartPage/cartPage.html';
+    });
 });
 
 function redirectToMovieList() {
+    sessionStorage.removeItem('browseFlag');
+    sessionStorage.removeItem('genre');
+    sessionStorage.removeItem('titleStart');
 
     const title = $('#title').val().trim();
     const year = $('#year').val().trim();
@@ -51,7 +64,6 @@ function redirectToMovieList() {
 
     sessionStorage.setItem('pageNumber', pageNumber.toString());
     sessionStorage.setItem('sortBy', sortBy);
-
-
+    sessionStorage.setItem('browseFlag', 'search');
     window.location.href = '../MovieList/movieList.html';
 }

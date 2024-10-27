@@ -16,6 +16,7 @@
 <div class="top-right-buttons">
     <button id="logout-button">Logout</button>
     <button id="dark-mode-toggle">Toggle Theme</button>
+    <button id="cart-button" class="cart-button">Cart</button>
 </div>
 
 <div class="main-container">
@@ -41,6 +42,9 @@
                     alert('Failed to log out. Please try again.');
                 }
             });
+        });
+        $('#cart-button').click(function() {
+            window.location.href = '../CartPage/cartPage.html';
         });
     });
 </script>

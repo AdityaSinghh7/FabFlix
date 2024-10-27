@@ -1,12 +1,15 @@
 let currentPage = parseInt(sessionStorage.getItem('pageNumber')) || 1;
 let sortBy = sessionStorage.getItem('sortBy') || 'titleThenRatingAsc';
-const pageSize = 15;
-
+let pageSize = parseInt(sessionStorage.getItem('pageSize')) || 10;
 const title = sessionStorage.getItem('title') || "";
 const year = sessionStorage.getItem('year') || "";
 const director = sessionStorage.getItem('director') || "";
 const star = sessionStorage.getItem('star') || "";
 const yearInt = year ? parseInt(year) : "";
+const browseFlag = sessionStorage.getItem('browseFlag') || "";
+const genre = sessionStorage.getItem('genre') || "";
+const titleStart = sessionStorage.getItem('titleStart') || "";
+
 
 function fetchMovies(){
     const url = '/FabFlix_war/api/movies';
@@ -22,7 +25,10 @@ function fetchMovies(){
             star: star,
             page: currentPage,
             sort: sortBy,
-            queriesPerPage: pageSize
+            queriesPerPage: pageSize,
+            browseFlag: browseFlag,
+            genre: genre,
+            titleStart: titleStart
         },
         success: (resultData) => {
             handleMovieListResult(resultData);
@@ -34,6 +40,28 @@ function fetchMovies(){
     });
 }
 
+function addToCart(movieId, title, price) {
+    let cart = JSON.parse(sessionStorage.getItem('cart')) || {};
+    if (!cart[movieId]) {
+        cart[movieId] = { title: title, price: price, quantity: 1 };
+    } else {
+        cart[movieId].quantity++;
+    }
+    sessionStorage.setItem('cart', JSON.stringify(cart));
+    alert(`${title} added to cart!`);
+}
+
+function handlePageSizeChange() {
+    const selectedPageSize = parseInt($('#page-size-dropdown').val());
+    if (selectedPageSize !== pageSize) {
+        pageSize = selectedPageSize;
+        sessionStorage.setItem('pageSize', pageSize);
+        currentPage = 1;
+        sessionStorage.setItem('pageNumber', currentPage);
+        fetchMovies();
+    }
+}
+
 function handleMovieListResult(resultData){
     console.log("handleMovieListResult: populating...")
 
@@ -41,7 +69,7 @@ function handleMovieListResult(resultData){
     movieTableBody.empty();
 
     if (resultData.length === 0) {
-        movieTableBody.append("<tr><td colspan='6'>0 valid results found</td></tr>");
+        movieTableBody.append("<tr><td colspan='7'>0 valid results found</td></tr>");
         return;
     }
 
@@ -53,10 +81,11 @@ function handleMovieListResult(resultData){
         let director = movie["director"];
         let genres = movie["genres"].split(', ');
         let starsArray = movie["stars"];
+        let price = movie["price"].toFixed(2);
 
         let genresHTML = '';
         genres.slice(0, 3).forEach(genre => {
-            genresHTML += `<a href='../Browse/browseByGenre.html?genre=${encodeURIComponent(genre)}'>${genre}</a>, `;
+            genresHTML += `<a href='#' onclick='browseByGenre("${genre}")'>${genre}</a>, `;
         });
         genresHTML = genresHTML.slice(0, -2);
 
@@ -77,11 +106,24 @@ function handleMovieListResult(resultData){
                 <td>${genresHTML}</td>
                 <td>${starsHTML}</td>
                 <td>${movie["rating"]}</td>
+                <td><button class="add-to-cart" onclick='addToCart("${movieId}", "${title}", ${price})'>Add to Cart</button></td>
             </tr>
         `;
 
         movieTableBody.append(rowHTML);
     }
+}
+
+function browseByGenre(genre) {
+    sessionStorage.setItem('browseFlag', 'genre');
+    sessionStorage.setItem('genre', genre);
+    sessionStorage.removeItem('title');
+    sessionStorage.removeItem('year');
+    sessionStorage.removeItem('director');
+    sessionStorage.removeItem('star');
+    sessionStorage.setItem('pageNumber', '1');
+    sessionStorage.setItem('sortBy', 'titleThenRatingAsc');
+    window.location.href = '../MovieList/movieList.html';
 }
 
 function handleSortChange(event) {
@@ -135,6 +177,9 @@ function init(){
     jQuery('body').append(paginationControls);
     jQuery('#prev-button').click(() => handlePageChange(currentPage - 1));
     jQuery('#next-button').click(() => handlePageChange(currentPage + 1));
+
+    $('#page-size-dropdown').val(pageSize);
+    $('#page-size-dropdown').change(handlePageSizeChange);
     fetchMovies();
 }
 

@@ -23,6 +23,7 @@ if (movieId) {
                 document.getElementById('movie-director').textContent = data.director;
                 document.getElementById('movie-genres').textContent = data.genres;
                 document.getElementById('movie-rating').textContent = data.rating;
+                document.getElementById('movie-price').textContent = data.price.toFixed(2);
 
                 let starsList = document.getElementById('movie-stars');
                 data.stars.forEach(star => {
@@ -39,6 +40,10 @@ if (movieId) {
                 });
                 genresHTML = genresHTML.slice(0, -2);
                 document.getElementById('movie-genres').innerHTML = genresHTML;
+
+                document.getElementById('add-to-cart-button').addEventListener('click', function() {
+                    addToCart(data.movieId, data.title, data.price);
+                });
             }
         })
         .catch(error => {
@@ -46,4 +51,15 @@ if (movieId) {
         });
 } else {
     document.body.innerHTML = '<p>No movieId specified in URL.</p>';
+}
+
+function addToCart(movieId, title, price) {
+    let cart = JSON.parse(sessionStorage.getItem('cart')) || {};
+    if (!cart[movieId]) {
+        cart[movieId] = { title: title, price: price, quantity: 1 };
+    } else {
+        cart[movieId].quantity++;
+    }
+    sessionStorage.setItem('cart', JSON.stringify(cart));
+    alert(`${title} added to cart!`);
 }

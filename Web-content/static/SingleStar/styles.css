@@ -136,9 +136,58 @@ body.dark-mode ul li:hover a {
 
 body.dark-mode button {
     background-color: #D60E0A;
-    color: #14110F;
 }
 
 body.dark-mode button:hover {
+    background-color: #FF5C58;
+}
+
+#add-to-cart-button {
+    display: block;
+    margin: 20px auto;
+    padding: 12px 24px;
+    background-color: #D60E0A;
+    color: #FFE6E8;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#add-to-cart-button:hover {
+    background-color: #FF5C58;
+}
+
+body.dark-mode #add-to-cart-button {
+    background-color: #D60E0A;
+}
+
+body.dark-mode #add-to-cart-button:hover {
+    background-color: #FF5C58;
+}
+
+#cart-button {
+    display: block;
+    margin: 20px auto;
+    padding: 12px 24px;
+    background-color: #D60E0A;
+    color: #FFE6E8;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#cart-button:hover {
+    background-color: #FF5C58;
+}
+
+body.dark-mode #cart-button {
+    background-color: #D60E0A;
+}
+
+body.dark-mode #cart-button:hover {
     background-color: #FF5C58;
 }

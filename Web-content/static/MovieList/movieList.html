@@ -8,7 +8,9 @@
     <title>Movie List</title>
 </head>
 <body>
-<button id="back-to-search" class="navigation-button">Go Back to Search Page</button>
+<button id="back-to-search" class="navigation-button">Back to Search Page</button>
+<button id="back-to-browse" class="navigation-button">Back to Browse Page</button>
+<button id="cart-button" class="navigation-button">Cart</button>
 
 <button id="dark-mode-toggle">Toggle Theme</button>
 
@@ -16,6 +18,16 @@
     <a href="../MainPage/mainPage.html">
         <img src="../Images/FabFlix-lightMode.svg" alt="FabFlix Logo" class="fabflix-logo">
     </a>
+</div>
+
+<div class="page-size-container">
+    <label for="page-size-dropdown">Entries per page:</label>
+    <select id="page-size-dropdown">
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+    </select>
 </div>
 
 <table id="movie_table">
@@ -27,6 +39,7 @@
         <th>Genres</th>
         <th>Stars</th>
         <th>Rating</th>
+        <th>Actions</th>
     </tr>
     </thead>
     <tbody id="movie_table_body"></tbody>
@@ -39,6 +52,12 @@
     $(document).ready(function() {
         $('#back-to-search').click(function() {
             window.location.href = '../SearchPage/searchPage.html';
+        });
+        $('#back-to-browse').click(function() {
+            window.location.href = '../BrowsePage/browsePage.html';
+        });
+        $('#cart-button').click(function() {
+            window.location.href = '../CartPage/cartPage.html';
         });
     });
 </script>

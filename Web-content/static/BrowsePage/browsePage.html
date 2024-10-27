@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Browse Page</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="logo-container">
+    <a href="../MainPage/mainPage.html">
+        <img src="../Images/FabFlix-lightMode.svg" alt="FabFlix Logo" class="fabflix-logo">
+    </a>
+</div>
+
+<div class="top-right-buttons">
+    <button id="dark-mode-toggle">Toggle Theme</button>
+    <button id="cart-button" class="cart-button">Cart</button>
+</div>
+
+
+<h1>Browse Movies</h1>
+
+<div class="browse-container">
+    <div class="browse-section">
+        <h2>Browse by Genre</h2>
+        <ul id="genre-list"></ul>
+    </div>
+
+    <div class="browse-section">
+        <h2>Browse by Title</h2>
+        <ul id="title-list"></ul>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="browsePage.js"></script>
+<script src="../dark-mode.js"></script>
+</body>
+</html>

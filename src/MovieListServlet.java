@@ -43,12 +43,15 @@ public class MovieListServlet extends HttpServlet {
         String director = request.getParameter("director");
         String star = request.getParameter("star");
         String sort = request.getParameter("sort");
+        String genre = request.getParameter("genre");
+        String titleStart = request.getParameter("titleStart");
+        String browseFlag = request.getParameter("browseFlag");
         int page = Integer.parseInt(request.getParameter("page"));
         int pageSize = Integer.parseInt(request.getParameter("queriesPerPage"));
         int offset = (page - 1) * pageSize;
 
         StringBuilder query = new StringBuilder();
-        query.append("SELECT m.id, m.title, m.year, m.director, ");
+        query.append("SELECT m.id, m.title, m.year, m.director, m.price, ");
         query.append("(SELECT GROUP_CONCAT(g.name ORDER BY g.name ASC SEPARATOR ', ') ");
         query.append(" FROM genres g JOIN genres_in_movies gim ON gim.genreId = g.id ");
         query.append(" WHERE gim.movieId = m.id ORDER BY g.name ASC) AS genres, ");
@@ -62,25 +65,41 @@ public class MovieListServlet extends HttpServlet {
 
         boolean hasPreviousCondition = false;
 
-        if (title != null && !title.isEmpty()) {
-            query.append("WHERE LOWER(m.title) LIKE LOWER(?) ");
-            hasPreviousCondition = true;
-        }
-        if (year != null && !year.isEmpty()) {
-            query.append(hasPreviousCondition ? "AND " : "WHERE ");
-            query.append("m.year = ? ");
-            hasPreviousCondition = true;
-        }
-        if (director != null && !director.isEmpty()) {
-            query.append(hasPreviousCondition ? "AND " : "WHERE ");
-            query.append("LOWER(m.director) LIKE LOWER(?) ");
-            hasPreviousCondition = true;
-        }
-        if (star != null && !star.isEmpty()) {
-            query.append(hasPreviousCondition ? "AND " : "WHERE ");
-            query.append("m.id IN (SELECT sim.movieId FROM stars s ");
-            query.append("JOIN stars_in_movies sim ON s.id = sim.starId ");
-            query.append("WHERE LOWER(s.name) LIKE LOWER(?)) ");
+        if ("search".equals(browseFlag)) {
+            if (title != null && !title.isEmpty()) {
+                query.append("WHERE LOWER(m.title) LIKE LOWER(?) ");
+                hasPreviousCondition = true;
+            }
+            if (year != null && !year.isEmpty()) {
+                query.append(hasPreviousCondition ? "AND " : "WHERE ");
+                query.append("m.year = ? ");
+                hasPreviousCondition = true;
+            }
+            if (director != null && !director.isEmpty()) {
+                query.append(hasPreviousCondition ? "AND " : "WHERE ");
+                query.append("LOWER(m.director) LIKE LOWER(?) ");
+                hasPreviousCondition = true;
+            }
+            if (star != null && !star.isEmpty()) {
+                query.append(hasPreviousCondition ? "AND " : "WHERE ");
+                query.append("m.id IN (SELECT sim.movieId FROM stars s ");
+                query.append("JOIN stars_in_movies sim ON s.id = sim.starId ");
+                query.append("WHERE LOWER(s.name) LIKE LOWER(?)) ");
+            }
+        } else if ("genre".equals(browseFlag)) {
+            query.append("WHERE m.id IN (SELECT gim.movieId FROM genres_in_movies gim ");
+            query.append("JOIN genres g ON gim.genreId = g.id ");
+            query.append("WHERE g.name = ?) ");
+        } else if ("title".equals(browseFlag)) {
+            if (titleStart != null) {
+                if ("*".equals(titleStart)) {
+                    query.append("WHERE m.title REGEXP '^[^a-zA-Z0-9]' ");
+                } else {
+                    query.append("WHERE LOWER(m.title) LIKE LOWER(?) ");
+                }
+            } else {
+                throw new IllegalArgumentException("Title start parameter is missing.");
+            }
         }
 
         switch (sort) {
@@ -114,33 +133,29 @@ public class MovieListServlet extends HttpServlet {
         }
 
         query.append("LIMIT ? OFFSET ?;");
-        LOGGER.info(query.toString());
+//        LOGGER.info(query.toString());
         try(Connection connection = ds.getConnection()){
             PreparedStatement ps = connection.prepareStatement(query.toString());
             int index = 1;
-            if (title != null && !title.isEmpty()) {
-                ps.setString(index++, "%" + title + "%");
-            }
-            if (year != null && !year.isEmpty()) {
-                try {
-                    int yearInt = Integer.parseInt(year); // Parse year as an integer
-                    ps.setInt(index++, yearInt); // Use setInt to set it in the prepared statement
-                } catch (NumberFormatException e) {
-                    LOGGER.severe("Invalid year format: " + year);
-                    JsonObject error = new JsonObject();
-                    error.addProperty("error", "Invalid year format. Please enter a valid integer.");
-                    out.write(error.toString());
-                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                    out.close();
-                    return; // Stop execution if the year is invalid
+            if ("search".equals(browseFlag)) {
+                if (title != null && !title.isEmpty()) {
+                    ps.setString(index++, "%" + title + "%");
                 }
+                if (year != null && !year.isEmpty()) {
+                    ps.setInt(index++, Integer.parseInt(year));
+                }
+                if (director != null && !director.isEmpty()) {
+                    ps.setString(index++, "%" + director + "%");
+                }
+                if (star != null && !star.isEmpty()) {
+                    ps.setString(index++, "%" + star + "%");
+                }
+            } else if ("genre".equals(browseFlag) && genre != null) {
+                ps.setString(index++, genre);
+            } else if ("title".equals(browseFlag) && titleStart != null && !"*".equals(titleStart)) {
+                ps.setString(index++, titleStart + "%");
             }
-            if (director != null && !director.isEmpty()) {
-                ps.setString(index++, "%" + director + "%");
-            }
-            if (star != null && !star.isEmpty()) {
-                ps.setString(index++, "%" + star + "%");
-            }
+
             ps.setInt(index++, pageSize);
             ps.setInt(index, offset);
 
@@ -156,6 +171,7 @@ public class MovieListServlet extends HttpServlet {
                 movie.addProperty("year", resultSet.getInt("year"));
                 movie.addProperty("director", resultSet.getString("director"));
                 movie.addProperty("genres", resultSet.getString("genres"));
+                movie.addProperty("price", resultSet.getFloat("price"));
 
                 JsonArray starsArray = new JsonArray();
                 String starsStr = resultSet.getString("stars");
