@@ -93,3 +93,101 @@ body.dark-mode table#movie_table tr:hover td {
     background-color: #445552;
     color: #FFE6E8;
 }
+
+#sort-dropdown {
+    margin: 10px 0;
+    padding: 8px 12px;
+    font-size: 1rem;
+    border: 2px solid #307351;
+    border-radius: 8px;
+    background-color: #FFE6E8;
+    color: #14110F;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+#sort-dropdown:hover {
+    background-color: #FF5C58;
+    color: #FFE6E8;
+    border-color: #D60E0A;
+}
+
+body.dark-mode #sort-dropdown {
+    background-color: #303030;
+    color: #FFE6E8;
+    border-color: #D60E0A;
+}
+
+body.dark-mode #sort-dropdown:hover {
+    background-color: #445552;
+    color: #FFE6E8;
+    border-color: #307351;
+}
+
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.pagination-controls button {
+    padding: 10px 20px;
+    margin: 0 5px;
+    font-size: 1rem;
+    background-color: #307351;
+    color: #FFE6E8;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination-controls button:hover {
+    background-color: #445552;
+}
+
+.pagination-controls button:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+}
+
+body.dark-mode .pagination-controls button {
+    background-color: #D60E0A;
+    color: #14110F;
+}
+
+body.dark-mode .pagination-controls button:hover {
+    background-color: #FF5C58;
+}
+
+body.dark-mode .pagination-controls button:disabled {
+    background-color: #666;
+    color: #ccc;
+}
+
+.navigation-button {
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: #307351;
+    color: #FFE6E8;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.navigation-button:hover {
+    background-color: #445552;
+}
+
+body.dark-mode .navigation-button {
+    background-color: #D60E0A;
+    color: #14110F;
+}
+
+body.dark-mode .navigation-button:hover {
+    background-color: #FF5C58;
+}

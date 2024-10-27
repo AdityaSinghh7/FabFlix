@@ -8,5 +8,5 @@
               type="javax.sql.DataSource"
               username="root"
               password="mypassword"
-              url="jdbc:mysql://localhost:3306/moviedb?useSSL=false"/>
+              url="jdbc:mysql://localhost:3306/moviedb?useSSL=false&amp;allowPublicKeyRetrieval=true"/>
 </Context>

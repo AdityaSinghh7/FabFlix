@@ -8,7 +8,7 @@
     <title>Movie List</title>
 </head>
 <body>
-
+<button id="back-to-search" class="navigation-button">Go Back to Search Page</button>
 
 <button id="dark-mode-toggle">Toggle Theme</button>
 <h1>FabFlix</h1>
@@ -29,6 +29,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="../dark-mode.js"></script>
 <script src="movieList.js"></script>
-
+<script>
+    $(document).ready(function() {
+        $('#back-to-search').click(function() {
+            window.location.href = '../SearchPage/searchPage.html';
+        });
+    });
+</script>
 </body>
 </html>

@@ -41,14 +41,18 @@ public class LoginPageServlet extends HttpServlet {
         JsonObject jsonResponse = new JsonObject();
         String loginStatus = checkLogin(email, password);
         if ("success".equals(loginStatus)) {
-            HttpSession session = request.getSession();
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                session.invalidate();
+            }
+            session = request.getSession(true);
             session.setAttribute("email", email);
             jsonResponse.addProperty("status", "success");
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(jsonResponse.toString());
         } else {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // Set HTTP 401 status code
+            response.setStatus(HttpServletResponse.SC_OK); 
             jsonResponse.addProperty("status", "error");
             jsonResponse.addProperty("message", loginStatus);
 
