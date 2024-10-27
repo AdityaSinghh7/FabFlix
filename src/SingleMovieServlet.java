@@ -46,18 +46,20 @@ public class SingleMovieServlet extends HttpServlet {
 
         try(Connection connection = ds.getConnection()){
             if(movieId != null){
-                String query = "SELECT m.title, m.year, m.director, r.rating," +
-                        " GROUP_CONCAT(DISTINCT g.name ORDER BY g.name SEPARATOR ', ') AS genres," +
-                        " GROUP_CONCAT(DISTINCT s.id ORDER BY s.name SEPARATOR ',') AS starIds," +
-                        " GROUP_CONCAT(DISTINCT s.name ORDER BY s.name SEPARATOR ',') AS starNames" +
-                        " FROM movies m" +
-                        " LEFT JOIN ratings r ON m.id = r.movieId" +
-                        " LEFT JOIN genres_in_movies gim ON m.id = gim.movieId" +
-                        " LEFT JOIN genres g ON gim.genreId = g.id" +
-                        " LEFT JOIN stars_in_movies sim ON m.id = sim.movieId" +
-                        " LEFT JOIN stars s ON sim.starId = s.id" +
-                        " WHERE m.id = ?" +
-                        " GROUP BY m.id;";
+                String query = "SELECT m.title, m.year, m.director, r.rating, " +
+                        "GROUP_CONCAT(DISTINCT g.name ORDER BY g.name ASC SEPARATOR ', ') AS genres, " +
+                        "GROUP_CONCAT(DISTINCT s.id ORDER BY star_count DESC, s.name ASC SEPARATOR ',') AS starIds, " +
+                        "GROUP_CONCAT(DISTINCT s.name ORDER BY star_count DESC, s.name ASC SEPARATOR ',') AS starNames " +
+                        "FROM movies m " +
+                        "LEFT JOIN ratings r ON m.id = r.movieId " +
+                        "LEFT JOIN genres_in_movies gim ON m.id = gim.movieId " +
+                        "LEFT JOIN genres g ON gim.genreId = g.id " +
+                        "LEFT JOIN stars_in_movies sim ON m.id = sim.movieId " +
+                        "LEFT JOIN stars s ON sim.starId = s.id " +
+                        "LEFT JOIN (SELECT starId, COUNT(*) AS star_count " +
+                        "           FROM stars_in_movies GROUP BY starId) sc ON sc.starId = s.id " +
+                        "WHERE m.id = ? " +
+                        "GROUP BY m.id;";
 
                 PreparedStatement ps = connection.prepareStatement(query);
                 ps.setString(1, movieId);

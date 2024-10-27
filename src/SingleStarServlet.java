@@ -43,8 +43,8 @@ public class SingleStarServlet extends HttpServlet{
         try(Connection connection = ds.getConnection()){
             if(starId != null){
                 String query = "SELECT s.id, s.name, s.birthYear, " +
-                        "GROUP_CONCAT(DISTINCT m.id ORDER BY m.title SEPARATOR ',') AS movieIds, " +
-                        "GROUP_CONCAT(DISTINCT m.title ORDER BY m.title SEPARATOR ',') AS movieTitles " +
+                        "GROUP_CONCAT(DISTINCT m.id ORDER BY m.year DESC, m.title ASC SEPARATOR ',') AS movieIds, " +
+                        "GROUP_CONCAT(DISTINCT m.title ORDER BY m.year DESC, m.title ASC SEPARATOR ',') AS movieTitles " +
                         "FROM stars s " +
                         "LEFT JOIN stars_in_movies sim ON s.id = sim.starId " +
                         "LEFT JOIN movies m ON sim.movieId = m.id " +

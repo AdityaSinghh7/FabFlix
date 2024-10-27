@@ -54,12 +54,16 @@ function handleMovieListResult(resultData){
         let genres = movie["genres"].split(', ');
         let starsArray = movie["stars"];
 
-        let genresHTML = genres.slice(0, 3).join(', ');
+        let genresHTML = '';
+        genres.slice(0, 3).forEach(genre => {
+            genresHTML += `<a href='../Browse/browseByGenre.html?genre=${encodeURIComponent(genre)}'>${genre}</a>, `;
+        });
+        genresHTML = genresHTML.slice(0, -2);
 
 
         let starsHTML = '';
         starsArray.slice(0, 3).forEach(star => {
-            starsHTML += `<a href='../singleStar.html?starId=${encodeURIComponent(star.id)}'>${star.name}</a>, `;
+            starsHTML += `<a href='../SingleStar/singleStar.html?starId=${encodeURIComponent(star.id)}'>${star.name}</a>, `;
         });
 
         starsHTML = starsHTML.slice(0, -2);
@@ -67,7 +71,7 @@ function handleMovieListResult(resultData){
 
         let rowHTML = `
             <tr>
-                <td><a href='../singleMovie.html?movieId=${encodeURIComponent(movieId)}'>${title}</a></td>
+                <td><a href='../SingleMovie/singleMovie.html?movieId=${encodeURIComponent(movieId)}'>${title}</a></td>
                 <td>${year}</td>
                 <td>${director}</td>
                 <td>${genresHTML}</td>

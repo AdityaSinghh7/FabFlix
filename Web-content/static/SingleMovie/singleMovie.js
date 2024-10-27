@@ -12,7 +12,7 @@ let movieId = getParameterByName('movieId');
 console.log(movieId);
 
 if (movieId) {
-    fetch('../api/movie?movieId=' + encodeURIComponent(movieId))
+    fetch('/FabFlix_war/api/movie?movieId=' + encodeURIComponent(movieId))
         .then(response => response.json())
         .then(data => {
             if (data.error) {
@@ -28,11 +28,17 @@ if (movieId) {
                 data.stars.forEach(star => {
                     let li = document.createElement('li');
                     let a = document.createElement('a');
-                    a.href = 'singleStar.html?starId=' + encodeURIComponent(star.id);
+                    a.href = '../SingleStar/singleStar.html?starId=' + encodeURIComponent(star.id);
                     a.textContent = star.name;
                     li.appendChild(a);
                     starsList.appendChild(li);
                 });
+                let genresHTML = '';
+                data.genres.split(', ').forEach(genre => {
+                    genresHTML += `<a href='../Browse/browseByGenre.html?genre=${encodeURIComponent(genre)}'>${genre}</a>, `;
+                });
+                genresHTML = genresHTML.slice(0, -2);
+                document.getElementById('movie-genres').innerHTML = genresHTML;
             }
         })
         .catch(error => {

@@ -11,7 +11,7 @@ let starId = getParameterByName('starId');
 
 if (starId) {
     // Adjust the fetch URL according to your application's context path
-    fetch('../api/star?starId=' + encodeURIComponent(starId))
+    fetch('/FabFlix_war/api/star?starId=' + encodeURIComponent(starId))
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok ' + response.statusText);
@@ -29,7 +29,7 @@ if (starId) {
                 data.movies.forEach(movie => {
                     let li = document.createElement('li');
                     let a = document.createElement('a');
-                    a.href = 'singleMovie.html?movieId=' + encodeURIComponent(movie.id);
+                    a.href = '../SingleMovie/singleMovie.html?movieId=' + encodeURIComponent(movie.id);
                     a.textContent = movie.title;
                     li.appendChild(a);
                     moviesList.appendChild(li);

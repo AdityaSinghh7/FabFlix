@@ -48,12 +48,16 @@ public class MovieListServlet extends HttpServlet {
         int offset = (page - 1) * pageSize;
 
         StringBuilder query = new StringBuilder();
-        query.append("SELECT m.id, m.title, m.year, m.director,");
-        query.append("(SELECT GROUP_CONCAT(g.name ORDER BY g.name ASC SEPARATOR ', ') FROM genres g ");
-        query.append("JOIN genres_in_movies gim ON gim.genreId = g.id WHERE gim.movieId = m.id) AS genres, ");
-        query.append("(SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name) ORDER BY s.name ASC SEPARATOR ', ') FROM ");
-        query.append("stars s JOIN stars_in_movies sim ON sim.starId = s.id WHERE sim.movieId = m.id) AS stars, ");
-        query.append("r.rating ");
+        query.append("SELECT m.id, m.title, m.year, m.director, ");
+        query.append("(SELECT GROUP_CONCAT(g.name ORDER BY g.name ASC SEPARATOR ', ') ");
+        query.append(" FROM genres g JOIN genres_in_movies gim ON gim.genreId = g.id ");
+        query.append(" WHERE gim.movieId = m.id ORDER BY g.name ASC) AS genres, ");
+        query.append("(SELECT GROUP_CONCAT(CONCAT(s.id, ':', s.name) ORDER BY star_count DESC, s.name ASC SEPARATOR ', ') ");
+        query.append(" FROM stars s ");
+        query.append(" JOIN stars_in_movies sim ON sim.starId = s.id ");
+        query.append(" JOIN (SELECT starId, COUNT(*) AS star_count ");
+        query.append("       FROM stars_in_movies GROUP BY starId) sc ON sc.starId = s.id ");
+        query.append(" WHERE sim.movieId = m.id ORDER BY star_count DESC, s.name ASC) AS stars, r.rating ");
         query.append("FROM movies m LEFT JOIN ratings r ON m.id = r.movieId ");
 
         boolean hasPreviousCondition = false;

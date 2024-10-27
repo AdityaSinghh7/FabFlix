@@ -7,11 +7,20 @@ body {
     transition: background-color 0.3s, color 0.3s;
 }
 
-h1 {
-    text-align: center;
-    font-size: 3rem;
-    color: #D60E0A;
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-bottom: 20px;
+    overflow: hidden;
+    height: 100px;
+}
+
+.fabflix-logo {
+    width: 200px;
+    height: auto;
+    object-fit: cover;
+    clip-path: inset(30% 0 30% 0);
 }
 
 #dark-mode-toggle {
@@ -41,7 +50,7 @@ table#movie_table {
 
 table#movie_table th,
 table#movie_table td {
-    padding: 12px 15px;
+    padding: 10px 12px;
     text-align: left;
     border-bottom: 1px solid #ddd;
     transition: background-color 0.3s, color 0.3s;
@@ -50,13 +59,13 @@ table#movie_table td {
 table#movie_table th {
     background-color: #307351;
     color: #FFE6E8;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
 }
 
 table#movie_table td {
     background-color: #FFE6E8;
     color: #14110F;
-    font-size: 1rem;
+    font-size: 0.9rem;
 }
 
 table#movie_table tr:hover td {
@@ -64,6 +73,23 @@ table#movie_table tr:hover td {
     color: #FFE6E8;
 }
 
+table#movie_table td a {
+    color: #D60E0A;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+table#movie_table td a:hover {
+    color: #FFB700;
+}
+
+body.dark-mode table#movie_table td a {
+    color: #FFD700;
+}
+
+body.dark-mode table#movie_table td a:hover {
+    color: #FFB700;
+}
 
 body.dark-mode {
     background-color: #14110F;
@@ -190,4 +216,9 @@ body.dark-mode .navigation-button {
 
 body.dark-mode .navigation-button:hover {
     background-color: #FF5C58;
+}
+
+body.dark-mode .fabflix-logo {
+    content: url('../Images/FabFlix-darkMode.svg');
+    transition: 0.3s;
 }

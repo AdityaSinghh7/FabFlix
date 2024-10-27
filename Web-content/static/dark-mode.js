@@ -5,10 +5,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // Save the preference to localStorage
         const logo = document.querySelector('.fabflix-logo');
         if (document.body.classList.contains('dark-mode')) {
-            logo.src = "./static/Images/FabFlix-darkMode.svg";
+            logo.src = "../Images/FabFlix-darkMode.svg";
             localStorage.setItem('theme', 'dark');
         } else {
-            logo.src = "./static/Images/FabFlix-lightMode.svg";
+            logo.src = "../Images/FabFlix-lightMode.svg";
             localStorage.setItem('theme', 'light');
         }
     }
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const logo = document.querySelector('.fabflix-logo');
         if (savedTheme === 'dark') {
             document.body.classList.add('dark-mode');
-            logo.src = "./static/Images/FabFlix-darkMode.svg";
+            logo.src = "../Images/FabFlix-darkMode.svg";
         }
     })();
 });

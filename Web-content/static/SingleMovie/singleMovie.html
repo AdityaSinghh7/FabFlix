@@ -2,9 +2,14 @@
 <html>
 <head>
     <title>Single Movie Page</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="../SingleStar/styles.css">
 </head>
 <body>
+<div class="logo-container">
+    <a href="../MainPage/mainPage.html">
+        <img src="../Images/FabFlix-lightMode.svg" alt="FabFlix Logo" class="fabflix-logo">
+    </a>
+</div>
 <button id="dark-mode-toggle">Toggle Theme</button>
 <h1 id="movie-title"></h1>
 <p><strong>Year:</strong> <span id="movie-year"></span></p>
@@ -16,6 +21,6 @@
 <button onclick="window.location.href='../MovieList/movieList.html'">Back To Movie List</button>
 <button onclick="window.history.back()">Back</button>
 </body>
-<script src="single-movie.js"></script>
-<script src="dark-mode.js"></script>
+<script src="singleMovie.js"></script>
+<script src="../dark-mode.js"></script>
 </html>

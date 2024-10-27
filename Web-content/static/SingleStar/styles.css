@@ -1,0 +1,144 @@
+
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: 'Nunito', sans-serif;
+    background-color: #FFE6E8;
+    color: #14110F;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.logo-container {
+    position: fixed;
+    top: 5px;
+    left: 5px;
+    z-index: 100;
+}
+
+.fabflix-logo {
+    width: 200px;
+    height: auto;
+    object-fit: cover;
+    clip-path: inset(40% 0 40% 0);
+    transition: transform 0.3s;
+}
+
+h1 {
+    font-size: 3rem;
+    color: #D60E0A;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+
+p a {
+    color: #D60E0A;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+strong {
+    color: #307351;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    background-color: #FFE6E8;
+    padding: 8px 12px;
+    margin-bottom: 5px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+ul li a{
+    color: #D60E0A;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+ul li a:hover{
+    color: #FFB700;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+ul li:hover {
+    background-color: #FF5C58;
+    color: #FFE6E8;
+    ul li a{
+        color: #FFB700;
+    }
+}
+
+
+button {
+    padding: 10px 20px;
+    margin: 10px 5px;
+    background-color: #307351;
+    color: #FFE6E8;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+button:hover {
+    background-color: #445552;
+}
+
+#dark-mode-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+}
+
+
+body.dark-mode {
+    background-color: #14110F;
+    color: #FFE6E8;
+}
+
+body.dark-mode h1 {
+    color: #FFE6E8;
+}
+
+body.dark-mode strong {
+    color: #D60E0A;
+}
+
+body.dark-mode ul li {
+    background-color: #3D3D3D;
+    color: #F0E68C;
+}
+
+body.dark-mode ul li a {
+    color: #FFD700;
+}
+
+body.dark-mode ul li:hover {
+    background-color: #5C5C5C;
+    color: #FFFFFF;
+}
+
+body.dark-mode ul li:hover a {
+    color: #FFB700;
+}
+
+body.dark-mode button {
+    background-color: #D60E0A;
+    color: #14110F;
+}
+
+body.dark-mode button:hover {
+    background-color: #FF5C58;
+}
