@@ -26,6 +26,7 @@ $(document).ready(function() {
         });
 
         $('#total-price').text(totalPrice.toFixed(2));
+        sessionStorage.setItem("totalPrice", totalPrice.toFixed(2))
     }
 
 
@@ -51,6 +52,6 @@ $(document).ready(function() {
 
 
     $('#proceed-to-payment').click(function() {
-        window.location.href = 'paymentPage.html';
+        window.location.href = '../PaymentPage/paymentPage.html';
     });
 });

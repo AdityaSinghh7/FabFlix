@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+<div class="header-container">
+    <div class="logo-container">
+        <a href="../MainPage/mainPage.html">
+            <img src="../Images/FabFlix-lightMode.svg" alt="FabFlix Logo" class="fabflix-logo">
+        </a>
+    </div>
+    <button id="dark-mode-toggle">Toggle Theme</button>
+</div>
+
+<h1>Payment Page</h1>
+
+<div class="payment-container">
+    <h2>Total Price: $<span id="total-price"></span></h2>
+
+    <form id="payment-form">
+        <div class="form-group">
+            <label for="first-name">First Name:</label>
+            <input type="text" id="first-name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="last-name">Last Name:</label>
+            <input type="text" id="last-name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="card-number">Credit Card Number:</label>
+            <input type="text" id="card-number" placeholder="Enter your credit card number..." required>
+        </div>
+
+        <div class="form-group">
+            <label for="expiration-date">Expiration Date:</label>
+            <input type="text" id="expiration-date" required placeholder="YYYY-MM-DD">
+        </div>
+
+        <button type="submit" id="place-order-button">Place Order</button>
+    </form>
+
+    <button onclick="window.location.href='../CartPage/cartPage.html'">Back to Cart</button>
+</div>
+
+<div class="popup-container" id="success-popup">
+    <div class="popup-content">
+        <p>Payment Successful! Your order has been placed.</p>
+        <button id="close-popup">OK</button>
+    </div>
+</div>
+
+<div class="popup-container" id="error-popup">
+    <div class="popup-content">
+        <p id="error-message">Error message</p>
+        <button id="close-error-popup">OK</button>
+    </div>
+</div>
+
+<script src="paymentPage.js"></script>
+<script src="../dark-mode.js"></script>
+</body>
+</html>

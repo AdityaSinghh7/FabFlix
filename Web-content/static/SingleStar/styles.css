@@ -8,11 +8,15 @@ body {
     transition: background-color 0.3s, color 0.3s;
 }
 
+.header-container {
+    display: flex;
+    align-items: center;      /* Aligns items vertically in the center */
+    justify-content: space-between; /* Pushes items to the edges */
+    margin-bottom: 20px;
+}
+
 .logo-container {
-    position: fixed;
-    top: 5px;
-    left: 5px;
-    z-index: 100;
+    display: inline-block;
 }
 
 .fabflix-logo {
@@ -81,6 +85,8 @@ ul li:hover {
 
 
 button {
+    top: 5px;
+    right: 5px;
     padding: 10px 20px;
     margin: 10px 5px;
     background-color: #307351;
@@ -96,10 +102,25 @@ button:hover {
     background-color: #445552;
 }
 
+.top-right-container {
+    display: flex;
+    justify-content: flex-end; /* Aligns items to the right */
+    margin-bottom: 10px;       /* Adds some space below the container */
+}
+
 #dark-mode-toggle {
-    position: fixed;
-    top: 20px;
-    right: 20px;
+    padding: 10px 20px;
+    background-color: #307351;
+    color: #FFE6E8;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#dark-mode-toggle:hover {
+    background-color: #445552;
 }
 
 
@@ -139,55 +160,5 @@ body.dark-mode button {
 }
 
 body.dark-mode button:hover {
-    background-color: #FF5C58;
-}
-
-#add-to-cart-button {
-    display: block;
-    margin: 20px auto;
-    padding: 12px 24px;
-    background-color: #D60E0A;
-    color: #FFE6E8;
-    border: none;
-    border-radius: 8px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-#add-to-cart-button:hover {
-    background-color: #FF5C58;
-}
-
-body.dark-mode #add-to-cart-button {
-    background-color: #D60E0A;
-}
-
-body.dark-mode #add-to-cart-button:hover {
-    background-color: #FF5C58;
-}
-
-#cart-button {
-    display: block;
-    margin: 20px auto;
-    padding: 12px 24px;
-    background-color: #D60E0A;
-    color: #FFE6E8;
-    border: none;
-    border-radius: 8px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-#cart-button:hover {
-    background-color: #FF5C58;
-}
-
-body.dark-mode #cart-button {
-    background-color: #D60E0A;
-}
-
-body.dark-mode #cart-button:hover {
     background-color: #FF5C58;
 }

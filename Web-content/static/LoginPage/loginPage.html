@@ -42,7 +42,7 @@
 <script>
     $(document).ready(function() {
         $('#login-form').on('submit', function(event) {
-            event.preventDefault(); // Prevent the default form submission
+            event.preventDefault();
 
             const email = $('#email').val();
             const password = $('#password').val();
@@ -58,15 +58,13 @@
                 success: function(response) {
                     console.log(response);
                     if (response.status === 'error') {
-                        // Display the error message
                         errorMessageDiv.text(response.message).show();
                     } else {
-                        // Redirect to main page on successful login
+                        sessionStorage.setItem('customerId', response.customerId);
                         window.location.href = '../MainPage/mainPage.html';
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    // Handle errors that occur during the request
                     errorMessageDiv.text('An error occurred. Please try again.').show();
                 }
             });

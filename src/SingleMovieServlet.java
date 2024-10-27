@@ -46,7 +46,7 @@ public class SingleMovieServlet extends HttpServlet {
 
         try(Connection connection = ds.getConnection()){
             if(movieId != null){
-                String query = "SELECT m.title, m.year, m.director, r.rating, " +
+                String query = "SELECT m.title, m.year, m.director, r.rating, m.price, " +
                         "GROUP_CONCAT(DISTINCT g.name ORDER BY g.name ASC SEPARATOR ', ') AS genres, " +
                         "GROUP_CONCAT(DISTINCT s.id ORDER BY star_count DESC, s.name ASC SEPARATOR ',') AS starIds, " +
                         "GROUP_CONCAT(DISTINCT s.name ORDER BY star_count DESC, s.name ASC SEPARATOR ',') AS starNames " +
@@ -72,6 +72,7 @@ public class SingleMovieServlet extends HttpServlet {
                     singleMovie.addProperty("director", resultSet.getString("director"));
                     singleMovie.addProperty("rating", resultSet.getFloat("rating"));
                     singleMovie.addProperty("genres", resultSet.getString("genres"));
+                    singleMovie.addProperty("price", resultSet.getFloat("price"));
 
                     String starIdsStr = resultSet.getString("starIds");
                     String starNamesStr = resultSet.getString("starNames");
