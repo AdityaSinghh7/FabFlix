@@ -12,6 +12,7 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    gap: 10px;
 }
 
 .logo-container {
@@ -33,6 +34,8 @@ body {
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
+    width: auto;
+    display: inline-block;
 }
 
 #dark-mode-toggle:hover {
@@ -85,7 +88,7 @@ h1 {
 }
 
 button {
-    width: 100%;
+    width: auto;
     padding: 10px;
     margin-top: 20px;
     background-color: #307351;
