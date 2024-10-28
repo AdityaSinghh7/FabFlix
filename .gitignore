@@ -10,6 +10,8 @@
 .idea/dictionaries
 .idea/
 
+.smarttomcat/
+
 # Sensitive or high-churn files:
 .idea/**/dataSources/
 .idea/**/dataSources.ids
