@@ -1,3 +1,4 @@
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -10,6 +11,10 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 @WebServlet(name = "PlaceOrderServlet", urlPatterns = "/api/place-order")
@@ -70,11 +75,20 @@ public class PlaceOrderServlet extends HttpServlet {
             connection.setAutoCommit(false);
 
             String salesInsert = "INSERT INTO sales (customerId, movieId, saleDate) VALUES (?, ?, ?)";
-            try (PreparedStatement salesStmt = connection.prepareStatement(salesInsert)) {
+            JsonArray salesDetails = new JsonArray();
+            Map<String, List<Integer>> saleIdsPerMovie = new HashMap<>();
+            try (PreparedStatement salesStmt = connection.prepareStatement(salesInsert, Statement.RETURN_GENERATED_KEYS)) {
                 JsonObject cartObj = com.google.gson.JsonParser.parseString(cart).getAsJsonObject();
                 LOGGER.info(cartObj.toString());
+
+
                 for (String movieId : cartObj.keySet()) {
                     int quantity = cartObj.get(movieId).getAsJsonObject().get("quantity").getAsInt();
+                    String movieName = cartObj.get(movieId).getAsJsonObject().get("title").getAsString();
+
+                    List<Integer> movieSaleIds = new ArrayList<>();
+                    saleIdsPerMovie.put(movieId, movieSaleIds);
+
                     for (int i = 0; i < quantity; i++) {
                         salesStmt.setInt(1, Integer.parseInt(customerId));
                         salesStmt.setString(2, movieId);
@@ -82,16 +96,60 @@ public class PlaceOrderServlet extends HttpServlet {
                         salesStmt.addBatch();
                     }
                 }
+
                 salesStmt.executeBatch();
+
+                List<Integer> allSaleIds = new ArrayList<>();
+                try (ResultSet generatedKeys = salesStmt.getGeneratedKeys()) {
+                    while (generatedKeys.next()) {
+                        int saleId = generatedKeys.getInt(1);
+                        allSaleIds.add(saleId);
+                    }
+                }
+
+                int saleIdIndex = 0;
+                for (String movieId : cartObj.keySet()) {
+                    int quantity = cartObj.get(movieId).getAsJsonObject().get("quantity").getAsInt();
+                    List<Integer> movieSaleIds = saleIdsPerMovie.get(movieId);
+                    for (int i = 0; i < quantity; i++) {
+                        if (saleIdIndex < allSaleIds.size()) {
+                            int saleId = allSaleIds.get(saleIdIndex);
+                            movieSaleIds.add(saleId);
+                            saleIdIndex++;
+                        } else {
+                            throw new SQLException("Mismatch between generated sale IDs and expected quantity");
+                        }
+                    }
+                }
+
+                for (String movieId : cartObj.keySet()) {
+                    JsonObject movieObj = cartObj.get(movieId).getAsJsonObject();
+                    int quantity = movieObj.get("quantity").getAsInt();
+                    String movieName = movieObj.get("title").getAsString();
+                    List<Integer> movieSaleIds = saleIdsPerMovie.get(movieId);
+
+                    JsonObject movieDetails = new JsonObject();
+                    movieDetails.addProperty("id", movieId);
+                    movieDetails.addProperty("name", movieName);
+                    movieDetails.addProperty("quantity", quantity);
+
+                    JsonArray saleIdsArray = new JsonArray();
+                    for (Integer saleId : movieSaleIds) {
+                        saleIdsArray.add(saleId);
+                    }
+                    movieDetails.add("saleIds", saleIdsArray);
+
+                    salesDetails.add(movieDetails);
+                }
+
+                jsonResponse.addProperty("status", "success");
+                jsonResponse.add("movies", salesDetails);
+                jsonResponse.addProperty("totalPrice", totalPrice);
+                out.write(jsonResponse.toString());
+
                 connection.commit();
             }
-
-
-            jsonResponse.addProperty("status", "success");
-            jsonResponse.addProperty("message", "Order placed successfully.");
-            out.write(jsonResponse.toString());
         } catch (SQLException e) {
-            LOGGER.severe("Database error: " + e.getMessage());
             jsonResponse.addProperty("status", "failure");
             jsonResponse.addProperty("message", "Transaction failed due to a database error.");
             out.write(jsonResponse.toString());

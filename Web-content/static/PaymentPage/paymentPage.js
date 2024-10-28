@@ -36,7 +36,7 @@ $(document).ready(function() {
                 },
                 success: function(response) {
                     if (response.status === 'success') {
-                        showSuccessPopup();
+                        showSuccessPopup(response.movies, response.totalPrice);
                         sessionStorage.removeItem('cart');
                         sessionStorage.removeItem('totalPrice');
                     } else {
@@ -52,7 +52,14 @@ $(document).ready(function() {
         }
     });
 
-    function showSuccessPopup() {
+    function showSuccessPopup(movies, totalPrice) {
+        $('#total-price-popup').text(totalPrice);
+        const movieList = $('#movie-list-popup');
+        movieList.empty();
+        movies.forEach(function(movie) {
+            const saleIdsText = movie.saleIds.join(', ');
+            movieList.append(`<li>${movie.name} - Quantity: ${movie.quantity} - Sale IDs: ${saleIdsText}</li>`);
+        });
         $('#success-popup').fadeIn();
     }
 
