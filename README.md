@@ -1,6 +1,6 @@
-# FabFlix Project
+# FabFlix Project - Project 2
 
-## Overview
+## Overview **Project2 is on this branch (project2-branch)**
 FabFlix is a dynamic web application that provides users with detailed information about movies and stars. The project is built using **Java Servlets** for backend logic to handle HTTP requests and interact with a MySQL database. The frontend is powered by **HTML**, **CSS**, and **JavaScript**. **AJAX** calls are used to retrieve data asynchronously from the server without reloading the page, offering a seamless user experience.
 
 ### New Features Implemented in Project 2:
