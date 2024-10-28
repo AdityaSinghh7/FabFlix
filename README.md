@@ -26,7 +26,7 @@ FabFlix is a dynamic web application that provides users with detailed informati
 - **JavaScript (AJAX)**: Handles asynchronous calls to the backend servlets to fetch data and update the page dynamically.
 
 ## Demo Video
-https://youtu.be/dO4TrvXAvhQ
+https://www.youtube.com/watch?v=9TeuROduS7Y
 
 ## Group Members
 - **Name**: Aditya Dev Singh  
