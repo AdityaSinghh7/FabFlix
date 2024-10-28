@@ -22,7 +22,7 @@ $(document).ready(function() {
 
         if (firstName && lastName && expirationDate) {
             $.ajax({
-                url: '/FabFlix_war/api/place-order',
+                url: '../../api/place-order',
                 method: 'POST',
                 contentType: 'application/x-www-form-urlencoded',
                 data: {

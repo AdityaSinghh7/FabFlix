@@ -1,7 +1,7 @@
 $(document).ready(function() {
     $('#logout-button').on('click', function() {
         $.ajax({
-            url: '/FabFlix_war/api/logout',
+            url: '../../api/logout',
             type: 'POST',
             success: function() {
                 window.location.href = '../LoginPage/loginPage.html';

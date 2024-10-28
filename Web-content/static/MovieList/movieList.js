@@ -12,7 +12,7 @@ const titleStart = sessionStorage.getItem('titleStart') || "";
 
 
 function fetchMovies(){
-    const url = '/FabFlix_war/api/movies';
+    const url = '../../api/movies';
 
     jQuery.ajax({
         url: url,

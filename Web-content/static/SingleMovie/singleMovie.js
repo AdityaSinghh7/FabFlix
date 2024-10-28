@@ -12,7 +12,7 @@ let movieId = getParameterByName('movieId');
 console.log(movieId);
 
 if (movieId) {
-    fetch('/FabFlix_war/api/movie?movieId=' + encodeURIComponent(movieId))
+    fetch('../../api/movie?movieId=' + encodeURIComponent(movieId))
         .then(response => response.json())
         .then(data => {
             if (data.error) {

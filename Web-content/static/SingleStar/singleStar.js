@@ -11,7 +11,7 @@ let starId = getParameterByName('starId');
 
 if (starId) {
     // Adjust the fetch URL according to your application's context path
-    fetch('/FabFlix_war/api/star?starId=' + encodeURIComponent(starId))
+    fetch('../../api/star?starId=' + encodeURIComponent(starId))
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok ' + response.statusText);

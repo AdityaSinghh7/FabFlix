@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $.ajax({
-        url: '/FabFlix_war/api/genres',
+        url: '../../api/genres',
         type: 'GET',
         dataType: 'json',
         success: function(genres) {
