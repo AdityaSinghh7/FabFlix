@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.jasypt.util.password.StrongPasswordEncryptor;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -68,9 +69,9 @@ public class LoginPageServlet extends HttpServlet {
     }
 
     private int checkLogin(String email, String password) {
-        int customerId = 0;
+        int customerId = -1;
         try (Connection connection = ds.getConnection()) {
-            String emailQuery = "SELECT id FROM customers WHERE email = ?";
+            String emailQuery = "SELECT id, password FROM customers WHERE email = ?";
             try (PreparedStatement ps = connection.prepareStatement(emailQuery)) {
                 ps.setString(1, email);
                 ResultSet rs = ps.executeQuery();
@@ -81,17 +82,13 @@ public class LoginPageServlet extends HttpServlet {
                 }
 
 
-                String passwordQuery = "SELECT id FROM customers WHERE email = ? AND password = ?";
-                try (PreparedStatement ps2 = connection.prepareStatement(passwordQuery)) {
-                    ps2.setString(1, email);
-                    ps2.setString(2, password);
-                    ResultSet rs2 = ps2.executeQuery();
-
-                    if (!rs2.next()) {
-                        loginStatus = "Password is incorrect.";
-                        return -1;
-                    }
-                    customerId = rs2.getInt("id");
+                String encryptedPassword = rs.getString("password");
+                customerId = rs.getInt("id");
+                StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
+                boolean success = passwordEncryptor.checkPassword(password, encryptedPassword);
+                if (!success) {
+                    loginStatus = "Password is incorrect.";
+                    return -1;
                 }
             }
         } catch (Exception e) {
