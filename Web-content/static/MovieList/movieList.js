@@ -79,7 +79,7 @@ function handleMovieListResult(resultData){
         let title = movie["title"];
         let year = movie["year"];
         let director = movie["director"];
-        let genres = movie["genres"].split(', ');
+        let genres = movie["genres"] ? movie["genres"].split(', ') : [];
         let starsArray = movie["stars"];
         let price = movie["price"].toFixed(2);
 
