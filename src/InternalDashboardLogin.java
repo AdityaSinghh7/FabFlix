@@ -16,10 +16,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.logging.Logger;
 
-@WebServlet(name = "LoginPageServlet", urlPatterns = "/api/login")
-public class LoginPageServlet extends HttpServlet {
+@WebServlet(name = "InternalDashboardLogin", urlPatterns = "/api/internalLogin")
+public class InternalDashboardLogin extends HttpServlet {
     private DataSource ds;
-    private static final Logger LOGGER = Logger.getLogger(LoginPageServlet.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(InternalDashboardLogin.class.getName());
     private String loginStatus;
 
     public void init() {
@@ -36,13 +36,13 @@ public class LoginPageServlet extends HttpServlet {
         }
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        LOGGER.info("doPost method called for LoginPageServlet");
+
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
 
-        LOGGER.info("Login attempt for email: " + email + ", password: " + password);
         try {
             RecaptchaVerify.verify(gRecaptchaResponse);
         } catch (Exception e) {
@@ -57,65 +57,54 @@ public class LoginPageServlet extends HttpServlet {
         }
 
         JsonObject jsonResponse = new JsonObject();
-        int customerId = checkLogin(email, password);
-        if (customerId != -1) {
+        boolean loggedIn = checkEmployeeLogin(email, password);
+        if (loggedIn) {
             HttpSession session = request.getSession(false);
             if (session != null) {
                 session.invalidate();
             }
-            LOGGER.info("Login successful for email: " + email + ", customerId: " + customerId);
-            session = request.getSession(true);
-            session.setAttribute("email", email);
-            session.setAttribute("customerId", customerId);
-
             jsonResponse.addProperty("status", "success");
-            jsonResponse.addProperty("customerId", customerId);
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().write(jsonResponse.toString());
-        } else {
-            LOGGER.warning("Login failed for email: " + email + ". Reason: " + loginStatus);
-            response.setStatus(HttpServletResponse.SC_OK); 
+            jsonResponse.addProperty("employeeEmail", email);
+            session = request.getSession(true);
+            session.setAttribute("employeeEmail", email);
+//            response.sendRedirect(request.getContextPath() + "/static/_dashboard/_dashboardHome.html");
+        }
+        else{
             jsonResponse.addProperty("status", "error");
             jsonResponse.addProperty("message", loginStatus);
-
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().write(jsonResponse.toString());
         }
-
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(jsonResponse.toString());
     }
 
-    private int checkLogin(String email, String password) {
-        int customerId = 0;
+    private boolean checkEmployeeLogin(String email, String password){
+        boolean found = false;
         try (Connection connection = ds.getConnection()) {
-            String emailQuery = "SELECT id, password FROM customers WHERE email = ?";
+            String emailQuery = "SELECT email, password FROM employees WHERE email = ?";
             try (PreparedStatement ps = connection.prepareStatement(emailQuery)) {
                 ps.setString(1, email);
                 ResultSet rs = ps.executeQuery();
 
                 if (!rs.next()) {
                     loginStatus = "Email is invalid";
-                    return -1;
+                    return found;
                 }
 
 
                 String encryptedPassword = rs.getString("password");
-                LOGGER.info("User found with email: " + email + ", checking password: " + encryptedPassword);
-                customerId = rs.getInt("id");
-
                 StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
                 boolean success = passwordEncryptor.checkPassword(password, encryptedPassword);
-                LOGGER.info("success value for email" + email + "value: " + success);
                 if (!success) {
                     loginStatus = "Password is incorrect.";
-                    return -1;
+                    return found;
                 }
+                found = true;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         loginStatus = "success";
-        return customerId;
+        return found;
     }
 }

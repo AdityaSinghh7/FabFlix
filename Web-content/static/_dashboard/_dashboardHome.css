@@ -1,0 +1,262 @@
+/* Base Styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Nunito', sans-serif;
+    background-color: #FFE6E8;
+    color: #14110F;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.logo-container {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+}
+
+.fabflix-logo {
+    width: 200px;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.dashboard-container {
+    margin-top: 100px;
+    padding: 40px;
+    background-color: #307351;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.dashboard-title {
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    color: #FFE6E8;
+    transition: color 0.3s;
+}
+
+.button-group {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.dashboard-button {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    color: #FFE6E8;
+    background-color: #D60E0A;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.dashboard-button:hover {
+    background-color: #FF5C58;
+}
+
+.dark-mode-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #FFE6E8;
+    background-color: #445552;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.dark-mode-button:hover {
+    background-color: #307351;
+}
+
+/* Popup Styles */
+.popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(20, 17, 15, 0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-content {
+    background-color: #FFE6E8;
+    padding: 30px;
+    border-radius: 12px;
+    width: 400px;
+    max-width: 90%;
+    text-align: center;
+    position: relative;
+}
+
+.popup-content h2 {
+    margin-top: 0;
+    color: #14110F;
+}
+
+.popup-content .form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.popup-content label {
+    display: block;
+    margin-bottom: 5px;
+    color: #14110F;
+}
+
+.popup-content input[type="text"],
+.popup-content input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 2px solid #14110F;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.popup-content input[type="text"]:focus,
+.popup-content input[type="number"]:focus {
+    border-color: #D60E0A;
+}
+
+.popup-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #FFE6E8;
+    background-color: #D60E0A;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 10px 5px;
+    transition: background-color 0.3s;
+}
+
+.popup-button:hover {
+    background-color: #FF5C58;
+}
+
+.cancel-button {
+    background-color: #445552;
+}
+
+.cancel-button:hover {
+    background-color: #307351;
+}
+
+.required {
+    color: #D60E0A;
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+    background-color: #14110F;
+    color: #FFE6E8;
+}
+
+body.dark-mode .dashboard-container {
+    background-color: #14110F;
+}
+
+body.dark-mode .dashboard-title,
+body.dark-mode label {
+    color: #FFE6E8;
+}
+
+body.dark-mode .dashboard-button {
+    background-color: #D60E0A;
+    color: #14110F;
+}
+
+body.dark-mode .dashboard-button:hover {
+    background-color: #FF5C58;
+}
+
+body.dark-mode .dark-mode-button {
+    background-color: #D60E0A;
+    color: #14110F;
+}
+
+body.dark-mode .dark-mode-button:hover {
+    background-color: #FF5C58;
+}
+
+body.dark-mode .popup-content {
+    background-color: #303030;
+    color: #FFE6E8;
+}
+
+body.dark-mode .popup-content input[type="text"],
+body.dark-mode .popup-content input[type="number"] {
+    background-color: #3f3f3f;
+    color: #FFE6E8;
+    border-color: #FFE6E8;
+}
+
+body.dark-mode .popup-content input[type="text"]:focus,
+body.dark-mode .popup-content input[type="number"]:focus {
+    border-color: #FF5C58;
+}
+
+body.dark-mode .popup-button {
+    background-color: #D60E0A;
+    color: #FFE6E8;
+}
+
+body.dark-mode .popup-button:hover {
+    background-color: #FF5C58;
+}
+
+body.dark-mode .cancel-button {
+    background-color: #445552;
+    color: #FFE6E8;
+}
+
+body.dark-mode .cancel-button:hover {
+    background-color: #307351;
+}
+
+/* Metadata Table Styles */
+#metadata-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#metadata-content th,
+#metadata-content td {
+    border: 1px solid #14110F;
+    padding: 8px;
+    text-align: left;
+}
+
+body.dark-mode #metadata-content th,
+body.dark-mode #metadata-content td {
+    border: 1px solid #FFE6E8;
+}
+
+#metadata-content th {
+    background-color: #D60E0A;
+    color: #FFE6E8;
+}
+
+body.dark-mode #metadata-content th {
+    background-color: #D60E0A;
+    color: #14110F;
+}

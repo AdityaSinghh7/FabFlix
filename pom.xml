@@ -15,6 +15,7 @@
             <version>8.0.32</version>
         </dependency>
 
+
         <!-- Jakarta Servlet API, scope is provided since it's included by Tomcat -->
         <dependency>
             <groupId>jakarta.servlet</groupId>
@@ -35,6 +36,12 @@
             <groupId>io.github.cdimascio</groupId>
             <artifactId>dotenv-java</artifactId>
             <version>3.0.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jasypt</groupId>
+            <artifactId>jasypt</artifactId>
+            <version>1.9.3</version>
         </dependency>
     </dependencies>
 

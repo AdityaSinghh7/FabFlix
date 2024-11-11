@@ -27,13 +27,17 @@ public class SessionFilter implements Filter {
         String requestURI = req.getRequestURI();
         String loginPageURL = contextPath + "/static/LoginPage/loginPage.html";
         String landingPageURL = contextPath + "/static/LandingPage/landingPage.html";
+        String employeeLoginURL = contextPath + "/_dashboard";
+        String employeeHomeURL  = contextPath + "/static/_dashboard/_dashboardHome.html";
 
 
 
         boolean apiLoginRequest = requestURI.equals(contextPath + "/api/login");
         boolean apiLogoutRequest = requestURI.equals(contextPath + "/api/logout");
+        boolean isEmployeeRequest = requestURI.startsWith(contextPath + "/_dashboard");
         boolean rootRequest = requestURI.equals(contextPath + "/");
         boolean loggedIn = (session != null && session.getAttribute("email") != null);
+        boolean loggedInEmployee = (session != null && session.getAttribute("employeeEmail") != null);
         boolean loginRequest = requestURI.equals(loginPageURL);
         boolean landingPageRequest = requestURI.equals(landingPageURL) || rootRequest;;
         boolean isStaticResource = requestURI.endsWith(".css")
@@ -42,11 +46,26 @@ public class SessionFilter implements Filter {
                 || requestURI.endsWith(".jpg")
                 || requestURI.endsWith(".gif")
                 || requestURI.endsWith(".svg");
+        boolean isEmployeeDashboardResource = requestURI.startsWith(contextPath + "/static/_dashboard/");
+        boolean isEmployeeLogin   = requestURI.startsWith(contextPath + "/api/internalLogin");
+        boolean isApiRequest      = requestURI.startsWith(contextPath + "/api/");
 
-        if (loggedIn || loginRequest || landingPageRequest || isStaticResource || apiLoginRequest || apiLogoutRequest) {
+        if (isStaticResource || isEmployeeLogin) {
             chain.doFilter(request, response);
+        } else if (isEmployeeRequest) {
+            if (loggedInEmployee) {
+                chain.doFilter(request, response);
+            } else {
+                res.sendRedirect(employeeLoginURL);
+            }
+        } else if (isApiRequest) {
+            if (loggedIn || loggedInEmployee) {
+                chain.doFilter(request, response);
+            } else {
+                res.sendRedirect(loginPageURL);
+            }
         } else {
-            res.sendRedirect(loginPageURL);
+            chain.doFilter(request, response);
         }
     }
 
