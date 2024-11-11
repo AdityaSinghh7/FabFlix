@@ -97,7 +97,7 @@ These optimizations significantly enhance performance compared to a naive implem
 ---
 
 ## Video Link:
-- * To Be Uploaded 
+- * https://youtu.be/M39iQgEAY94
 
 
 ## Group Members
