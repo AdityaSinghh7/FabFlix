@@ -96,6 +96,27 @@ These optimizations significantly enhance performance compared to a naive implem
 
 ---
 
+### Files Using Prepared Statements
+
+The following files have been updated to utilize `PreparedStatement` for all database interactions, enhancing security by preventing SQL injection attacks and ensuring parameterized query execution:
+
+- `DashboardLogin.java`
+- `GetMeta.java`
+- `LogoutServlet.java`
+- `ParseAll.java`
+- `RecaptchaVerify.java`
+- `SingleStarServlet.java`
+- `AddMovieServlet.java`
+- `DashboardServlet.java`
+- `InsertStarServlet.java`
+- `MovieListServlet.java`
+- `PlaceOrderServlet.java`
+- `GetAllGenres.java`
+- `LoginPageServlet.java`
+- `SingleMovieServlet.java`
+
+This implementation ensures that all SQL queries are safely constructed and executed with proper parameters, providing an additional layer of security and robustness to the FabFlix project.
+
 ## Video Link:
 - * https://youtu.be/M39iQgEAY94
 
