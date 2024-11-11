@@ -2,6 +2,7 @@
 
 ## Non Main Branches used:
 - ## Project 2 - branch name: "project2-branch"
+- ## Project 3 - branch name: "project3-branch"
 
 ## Overview
 FabFlix is a dynamic web application that provides users with detailed information about movies and stars. The project is built using **Java Servlets** for backend logic to handle HTTP requests and interact with a MySQL database. The frontend is powered by **HTML**, **CSS**, and **JavaScript**. **AJAX** calls are used to retrieve data asynchronously from the server without reloading the page, offering a seamless user experience.
@@ -20,7 +21,7 @@ FabFlix is a dynamic web application that provides users with detailed informati
 - **JavaScript (AJAX)**: Handles asynchronous calls to the backend servlets to fetch data and update the page dynamically.
 
 ## Demo Video
-https://youtu.be/p43Apwd-uWE
+https://youtu.be/M39iQgEAY94
 
 ## Group Members
 - **Name**: Aditya Dev Singh  
