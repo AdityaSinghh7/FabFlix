@@ -33,7 +33,10 @@ BEGIN
         SET o_genre_id = NULL;
     ELSE
         -- Generate new movie ID
-        SELECT CONCAT('tt', LPAD(CONVERT(SUBSTRING(MAX(id), 3), UNSIGNED) + 1, 7, '0')) INTO o_movie_id FROM movies;
+        SELECT CONCAT('ttf', LPAD(CONVERT(IFNULL(MAX(CAST(SUBSTRING(id, 4) AS UNSIGNED)), 0) + 1, CHAR), 7, '0'))
+        INTO o_movie_id
+        FROM movies
+        WHERE id REGEXP '^ttf[0-9]+$';
 
         -- Insert new movie
         INSERT INTO movies (id, title, year, director) VALUES (o_movie_id, p_title, p_year, p_director);
