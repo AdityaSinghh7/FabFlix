@@ -10,9 +10,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 @WebFilter("/*")
 public class SessionFilter implements Filter {
+    private static final Logger LOGGER = Logger.getLogger(SessionFilter.class.getName());
 
     public void init(FilterConfig filterConfig) {
 
@@ -27,14 +29,22 @@ public class SessionFilter implements Filter {
         String requestURI = req.getRequestURI();
         String loginPageURL = contextPath + "/static/LoginPage/loginPage.html";
         String landingPageURL = contextPath + "/static/LandingPage/landingPage.html";
+        String dashboardLogin = contextPath + "/static/dashboard/dashboardLogin.html";
+        String dashboardRequest = contextPath + "/_dashboard";
+        LOGGER.info(dashboardRequest + "This is from here");
+        System.out.println(dashboardRequest + "This is from here");
+        String apiDashboardLogin = contextPath + "/api/dashboardLogin";
 
 
-
+        boolean isMainDashboardRequest = requestURI.startsWith(dashboardRequest);
         boolean apiLoginRequest = requestURI.equals(contextPath + "/api/login");
         boolean apiLogoutRequest = requestURI.equals(contextPath + "/api/logout");
+        boolean isApiDashboardRequest = requestURI.equals(apiDashboardLogin);
         boolean rootRequest = requestURI.equals(contextPath + "/");
         boolean loggedIn = (session != null && session.getAttribute("email") != null);
+        boolean isEmployeeLoggedIn = (session != null && session.getAttribute("isLoggedIn") != null);
         boolean loginRequest = requestURI.equals(loginPageURL);
+        boolean isDashboardLoginRequest = requestURI.equals(dashboardLogin);
         boolean landingPageRequest = requestURI.equals(landingPageURL) || rootRequest;;
         boolean isStaticResource = requestURI.endsWith(".css")
                 || requestURI.endsWith(".js")
@@ -43,7 +53,8 @@ public class SessionFilter implements Filter {
                 || requestURI.endsWith(".gif")
                 || requestURI.endsWith(".svg");
 
-        if (loggedIn || loginRequest || landingPageRequest || isStaticResource || apiLoginRequest || apiLogoutRequest) {
+        if (loggedIn || loginRequest || landingPageRequest || isStaticResource || apiLoginRequest || apiLogoutRequest
+                || isMainDashboardRequest || isDashboardLoginRequest || isEmployeeLoggedIn || isApiDashboardRequest) {
             chain.doFilter(request, response);
         } else {
             res.sendRedirect(loginPageURL);

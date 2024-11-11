@@ -25,6 +25,11 @@
         <servlet-class>LoginPageServlet</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>DashboardServlet</servlet-name>
+        <servlet-class>DashboardServlet</servlet-class>
+    </servlet>
+
 
     <!-- Servlet Mapping -->
     <servlet-mapping>
@@ -45,6 +50,11 @@
     <servlet-mapping>
         <servlet-name>LoginPageServlet</servlet-name>
         <url-pattern>/api/login</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>DashboardServlet</servlet-name>
+        <url-pattern>/_dashboard</url-pattern>
     </servlet-mapping>
 
 
