@@ -92,7 +92,7 @@ public class MoviesHandler extends DefaultHandler {
             moviePs.close();
             genrePs.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 
@@ -129,7 +129,7 @@ public class MoviesHandler extends DefaultHandler {
                     }
                 } catch (SQLException e) {
                     System.err.println("SQLException in endElement: " + e.getMessage());
-                    e.printStackTrace();
+//                    e.printStackTrace();
                 }
                 break;
         }
@@ -216,7 +216,7 @@ public class MoviesHandler extends DefaultHandler {
         try {
             inconsistencyWriter.write(message + "\n");
         } catch (IOException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 

@@ -34,6 +34,7 @@ public class SessionFilter implements Filter {
         LOGGER.info(dashboardRequest + "This is from here");
         System.out.println(dashboardRequest + "This is from here");
         String apiDashboardLogin = contextPath + "/api/dashboardLogin";
+        String dashboardHomeURL = contextPath + "/static/dashboard/dashboardHome.html";
 
 
         boolean isMainDashboardRequest = requestURI.startsWith(dashboardRequest);
@@ -52,6 +53,11 @@ public class SessionFilter implements Filter {
                 || requestURI.endsWith(".jpg")
                 || requestURI.endsWith(".gif")
                 || requestURI.endsWith(".svg");
+
+        if (requestURI.equals(dashboardHomeURL) && !isEmployeeLoggedIn) {
+            res.sendRedirect(dashboardLogin);
+            return;
+        }
 
         if (loggedIn || loginRequest || landingPageRequest || isStaticResource || apiLoginRequest || apiLogoutRequest
                 || isMainDashboardRequest || isDashboardLoginRequest || isEmployeeLoggedIn || isApiDashboardRequest) {

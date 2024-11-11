@@ -105,7 +105,7 @@ public class ParseAll {
             System.out.println("Movies parsing completed.");
 
         } catch (SQLException | IOException | SAXException | ParserConfigurationException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 

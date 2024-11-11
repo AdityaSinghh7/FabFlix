@@ -49,13 +49,15 @@
             const email = $('#email').val();
             const password = $('#password').val();
             const errorMessageDiv = $('#error-message');
+            const recaptchaResponse = grecaptcha.getResponse();
 
             $.ajax({
                 url: '../../api/dashboardLogin',
                 type: 'POST',
                 data: {
                     email: email,
-                    password: password
+                    password: password,
+                    'g-recaptcha-response': recaptchaResponse
                 },
                 success: function(response) {
                     console.log(response);

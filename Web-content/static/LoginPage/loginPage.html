@@ -49,18 +49,27 @@
             const email = $('#email').val();
             const password = $('#password').val();
             const errorMessageDiv = $('#error-message');
+            const recaptchaResponse = grecaptcha.getResponse();
+
+            if (recaptchaResponse === "") {
+                errorMessageDiv.text("Please complete the reCAPTCHA").show();
+                grecaptcha.reset();
+                return;
+            }
 
             $.ajax({
                 url: '../../api/login',
                 type: 'POST',
                 data: {
                     email: email,
-                    password: password
+                    password: password,
+                    'g-recaptcha-response': recaptchaResponse
                 },
                 success: function(response) {
                     console.log(response);
                     if (response.status === 'error') {
                         errorMessageDiv.text(response.message).show();
+                        grecaptcha.reset();
                     } else {
                         sessionStorage.setItem('customerId', response.customerId);
                         window.location.href = '../MainPage/mainPage.html';
@@ -68,6 +77,7 @@
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     errorMessageDiv.text('An error occurred. Please try again.').show();
+                    grecaptcha.reset();
                 }
             });
         });

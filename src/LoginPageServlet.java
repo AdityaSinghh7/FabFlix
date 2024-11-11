@@ -39,6 +39,20 @@ public class LoginPageServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+
+        try {
+            RecaptchaVerify.verify(gRecaptchaResponse);
+        } catch (Exception e) {
+            JsonObject jsonResponse = new JsonObject();
+            jsonResponse.addProperty("status", "error");
+            jsonResponse.addProperty("message", "reCAPTCHA verification failed: " + e.getMessage());
+
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(jsonResponse.toString());
+            return;
+        }
 
         JsonObject jsonResponse = new JsonObject();
         int customerId = checkLogin(email, password);
