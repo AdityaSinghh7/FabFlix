@@ -1,35 +1,29 @@
-# FabFlix Project - Project 2
+# FabFlix Project - Project 3
 
-## Overview **Project2 is on this branch (project2-branch)**
-FabFlix is a dynamic web application that provides users with detailed information about movies and stars. The project is built using **Java Servlets** for backend logic to handle HTTP requests and interact with a MySQL database. The frontend is powered by **HTML**, **CSS**, and **JavaScript**. **AJAX** calls are used to retrieve data asynchronously from the server without reloading the page, offering a seamless user experience.
+## Overview **Project3 is on this branch (project3-branch)**
+FabFlix is a dynamic web application that provides users with detailed movie and star information. Building upon Project 2, this iteration focuses on improving security, performance, and extending functionality using **reCAPTCHA**, **HTTPS**, **encrypted passwords**, **prepared statements**, and **stored procedures** for enhanced database interactions.
 
-### New Features Implemented in Project 2:
-- **Landing/Login Page**:  Redirects to the Login Page if the user is not logged in. The login form uses HTTP POST to prevent email and password exposure in the URL.
-- **Search Functionality:**: Users can search for movies by title, year, director, or star's name, using AND logic for multi-condition searches. Substring matching is supported for string fields using LIKE operators.
-- **Browse by Genre and Title**: Users can browse by genres (sorted alphabetically) or by titles (sorted by alphanumeric characters and special character "*"). Clickable hyperlinks navigate to the Movie List Page with results filtered by the selected genre or title.
-- **Shopping Cart Page**: Allows users to view, modify, and manage movie purchases, including quantity adjustments and deletions.
-- **Payment Page**: Collects credit card information and validates against the credit_cards table.
+### New Features Implemented in Project 3:
+- **reCAPTCHA Integration**: Improved user authentication with Google's reCAPTCHA to distinguish between humans and bots on the login page.
+- **HTTPS Implementation**: Enabled secure data transfer by configuring Tomcat for HTTPS connections, ensuring client-server communication is encrypted.
+- **Prepared Statements**: Transitioned all SQL queries to use `PreparedStatement` to prevent SQL Injection attacks and ensure parameterized execution.
+- **Encrypted Passwords**: Updated customer passwords in the database to be securely stored using encryption. Server-side logic verifies plain-text input against encrypted values.
+- **Employee Dashboard**: Added a secure HTTPS endpoint for employees with operations such as:
+  - Adding new stars.
+  - Viewing database metadata.
+  - Adding new movies via a stored procedure (`add_movie`) that handles the creation and linking of related records (e.g., stars, genres).
 
-### SQL USAGE:
-- The LIKE predicates are used in the MovieListServlet to enable flexible search functionality, specifically for substring matching. Here’s how and where they are applied:
-- **Title Search:** The corresponding parameter in the prepared statement is set to %title% to match any substring.
-- **Director Search:** The corresponding parameter in the prepared statement is set to %director%.
-- **Star Name Search:** The servlet uses LIKE to allow users to search for movies by star names using partial matches. It uses a subquery that selects movies where the associated stars' names match the input string.
-- **Browsing by Title Start:** The corresponding parameter is set to titleStart% to match titles starting with the given character.
+### XML Parsing & Data Insertion:
+- **XML Parsing**: Developed a Java parser to process new movie data from `mains243.xml` and `casts124.xml`. New data is inserted into the existing Fabflix database, with updates to `stars_in_movies` and `genres_in_movies` tables as needed.
+- **Performance Optimizations**: Implemented two optimization techniques (beyond disabling auto-commit and using `PreparedStatement`) to improve XML parsing and insertion efficiency. Details are provided in the performance report.
 
-### Backend:
-- **Java Servlets**: Handle requests from the frontend and retrieve data from the database.
-- **MySQL Database**: Stores movie, genre, and star information, which is retrieved dynamically by the servlets.
-
-### Frontend:
-- **HTML/CSS**: For layout and styling.
-- **JavaScript (AJAX)**: Handles asynchronous calls to the backend servlets to fetch data and update the page dynamically.
-
-## Demo Video
-https://youtu.be/p43Apwd-uWE
+### Inconsistencies Report:
+Generated reports for data inconsistencies encountered during parsing:
+- `actors_inconsistencies.txt`
+- `casts_inconsistencies.txt`
+- `movies_inconsistencies.txt`
 
 ## Group Members
 - **Name**: Aditya Dev Singh  
   **UCI ID**: 67083916  
-  **Email**: adityads@uci.edu  
-
+  **Email**: adityads@uci.edu
