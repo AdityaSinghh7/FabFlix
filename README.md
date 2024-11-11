@@ -23,6 +23,83 @@ Generated reports for data inconsistencies encountered during parsing:
 - `casts_inconsistencies.txt`
 - `movies_inconsistencies.txt`
 
+# Optimization Report
+
+This report outlines the optimizations implemented in my data parsing and database insertion process, 
+highlighting the corresponding time reductions. 
+These optimizations significantly enhance performance compared to a naive implementation.
+
+## Optimizations Implemented
+
+1. **Batched Database Processing**
+2. **Multithreading for Parallel Parsing**
+
+---
+
+### 1. Batched Database Processing
+
+**Files Involved:**
+
+- `MoviesHandler.java`
+- `CastsHandler.java`
+- `ActorsHandler.java`
+
+**Description:**
+
+- Implemented batch processing using JDBC's batch operations (`addBatch()` and `executeBatch()`).
+- Batch size set to 500 operations for optimal performance.
+- Reduces the number of database transactions by grouping multiple insertions.
+
+**Benefits:**
+
+- **Reduced Network Overhead:** Fewer database connections and transactions.
+- **Improved Throughput:** Bulk insertions are faster than individual ones.
+
+---
+
+### 2. Multithreading for Parallel Parsing
+
+**Files Involved:**
+
+- `ParseAll.java`
+
+**Description:**
+
+- Utilized multithreading to parse multiple XML files concurrently.
+- Implemented using Java's `ExecutorService` with a fixed thread pool.
+- Ensured thread safety when accessing shared resources like database connections.
+
+**Benefits:**
+
+- **Concurrent Execution:** Multiple files processed simultaneously.
+- **Better CPU Utilization:** Exploits multi-core processors.
+
+---
+
+## Efficiency Over Naive Method
+
+**Naive Method Characteristics:**
+
+- Single-threaded execution.
+- Individual `INSERT` statements for each record.
+
+**Disadvantages of Naive Method:**
+
+- High network and database overhead.
+- Underutilization of system resources.
+- Longer processing times.
+
+**Optimized Approach Advantages:**
+
+- **Efficient Resource Utilization:** Better use of CPU and network.
+- **Scalability:** Handles larger datasets more effectively.
+
+---
+
+## Video Link:
+- * To Be Uploaded 
+
+
 ## Group Members
 - **Name**: Aditya Dev Singh  
   **UCI ID**: 67083916  
