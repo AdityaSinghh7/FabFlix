@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="./styles.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@700&display=swap" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@1,700&display=swap" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.devbridge-autocomplete/1.4.11/jquery.autocomplete.min.js"></script>
 </head>
 <body>
 <div class="logo-container">
@@ -21,22 +23,64 @@
 
 <div class="main-container">
     <h1 class="welcome-text">Welcome to FabFlix!</h1>
+
+    <div class="search-container">
+        <input type="text" id="search-bar" placeholder="Search for movies..." />
+        <button class="search-button">
+            <img src="../Images/search-icon-lightMode.svg" alt="Search Icon" class="search-icon" />
+        </button>
+    </div>
+
     <div class="button-container">
-        <button class="main-button" onclick="window.location.href='../SearchPage/searchPage.html'">Search Page</button>
+        <button class="main-button" onclick="window.location.href='../SearchPage/searchPage.html'">Legacy Search Page</button>
         <button class="main-button" onclick="window.location.href='../BrowsePage/browsePage.html'">Browse Page</button>
     </div>
 </div>
 
-<script src="../LoginPage/darkMode.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const logo = document.querySelector('.fabflix-logo');
+            const searchIcon = document.querySelector('.search-icon');
+
+            if (document.body.classList.contains('dark-mode')) {
+                logo.src = "../Images/FabFlix-darkMode.svg";
+                searchIcon.src = "../Images/search-icon-darkMode.svg";
+                localStorage.setItem('theme', 'dark');
+            } else {
+                logo.src = "../Images/FabFlix-lightMode.svg";
+                searchIcon.src = "../Images/search-icon-lightMode.svg";
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        document.getElementById('dark-mode-toggle').addEventListener('click', toggleDarkMode);
+
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            const logo = document.querySelector('.fabflix-logo');
+            const searchIcon = document.querySelector('.search-icon');
+
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                logo.src = "../Images/FabFlix-darkMode.svg";
+                searchIcon.src = "../Images/search-icon-darkMode.svg";
+            } else {
+                searchIcon.src = "../Images/search-icon-lightMode.svg";
+            }
+        })();
+    });
+</script>
 <script>
     $(document).ready(function() {
         $('#logout-button').on('click', function() {
             $.ajax({
-                url: '/FabFlix_war/api/logout',
+                url: '../../api/logout',
                 type: 'POST',
                 success: function() {
-                    window.location.href = '/FabFlix_war/static/LoginPage/loginPage.html';
+                    sessionStorage.clear();
+                    window.location.href = '../LoginPage/loginPage.html';
                 },
                 error: function() {
                     alert('Failed to log out. Please try again.');
@@ -45,6 +89,103 @@
         });
         $('#cart-button').click(function() {
             window.location.href = '../CartPage/cartPage.html';
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchButton = document.querySelector('.search-button');
+        const searchBar = document.getElementById('search-bar');
+
+        searchButton.addEventListener('click', () => {
+            const query = searchBar.value.trim();
+            if (query) {
+                sessionStorage.setItem('fullTextSearch', true);
+                sessionStorage.setItem('title', query);
+                window.location.href = '../MovieList/movieList.html';
+            }
+        });
+
+        searchBar.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const query = searchBar.value.trim();
+                if (query) {
+                    sessionStorage.setItem('fullTextSearch', true);
+                    sessionStorage.setItem('title', query);
+                    window.location.href = '../MovieList/movieList.html';
+                }
+            }
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        const autocompleteCache = {};
+
+
+        $('#search-bar').autocomplete({
+            lookup: function (query, doneCallback) {
+                console.log("Autocomplete initiated for query:", query);
+
+
+                if (autocompleteCache[query]) {
+                    console.log("Using cached results for:", query);
+                    doneCallback({ suggestions: autocompleteCache[query] });
+                    return;
+                }
+
+
+                if (query.length >= 3) {
+                    console.log("Sending AJAX request for:", query);
+
+                    $.ajax({
+                        method: "GET",
+                        url: "../../api/autocomplete",
+                        data: { query: query },
+                        success: function (data) {
+                            console.log("Received autocomplete suggestions:", data);
+                            const suggestions = Array.isArray(data) ? data : JSON.parse(data);
+                            autocompleteCache[query] = suggestions;
+                            doneCallback({ suggestions: suggestions });
+                        },
+                        error: function (error) {
+                            console.error("Error fetching autocomplete suggestions:", error);
+                        }
+                    });
+                }
+            },
+            onSelect: function (suggestion) {
+                console.log("Selected suggestion:", suggestion);
+                window.location.href = `../SingleMovie/singleMovie.html?movieId=${suggestion.data.movieId}`;
+            },
+            deferRequestBy: 300,
+            minChars: 3,
+            showNoSuggestionNotice: true,
+            noSuggestionNotice: "No suggestions found."
+        });
+
+        $('#search-bar').keypress(function (event) {
+            if (event.keyCode === 13) { // Enter key
+                const query = $(this).val().trim();
+                console.log("Performing full-text search for:", query);
+                if (query.length >= 3) {
+                    sessionStorage.setItem('fullTextSearch', true);
+                    sessionStorage.setItem('title', query);
+                    window.location.href = '../MovieList/movieList.html';
+                }
+            }
+        });
+
+        $('.search-button').click(function () {
+            const query = $('#search-bar').val().trim();
+            if (query.length >= 3) {
+                sessionStorage.setItem('fullTextSearch', true);
+                sessionStorage.setItem('title', query);
+                window.location.href = '../MovieList/movieList.html';
+            }
         });
     });
 </script>

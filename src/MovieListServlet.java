@@ -49,6 +49,8 @@ public class MovieListServlet extends HttpServlet {
         int page = Integer.parseInt(request.getParameter("page"));
         int pageSize = Integer.parseInt(request.getParameter("queriesPerPage"));
         int offset = (page - 1) * pageSize;
+        boolean fullTextSearch = Boolean.parseBoolean(request.getParameter("fullTextSearch"));
+        LOGGER.info("fullTextSearch: " + fullTextSearch);
 
         StringBuilder query = new StringBuilder();
         query.append("SELECT m.id, m.title, m.year, m.director, m.price, ");
@@ -65,7 +67,14 @@ public class MovieListServlet extends HttpServlet {
 
         boolean hasPreviousCondition = false;
 
-        if ("search".equals(browseFlag)) {
+
+        if (fullTextSearch && title != null && !title.isEmpty()) {
+            query.append("WHERE MATCH(m.title) AGAINST(? IN BOOLEAN MODE) ");
+            query.append("   OR LOWER(m.title) LIKE LOWER(?) ");
+            query.append("   OR edth(LOWER(m.title), LOWER(?), ?) ");
+            hasPreviousCondition = true;
+        }
+        else if ("search".equals(browseFlag)) {
             if (title != null && !title.isEmpty()) {
                 query.append("WHERE LOWER(m.title) LIKE LOWER(?) ");
                 hasPreviousCondition = true;
@@ -131,13 +140,26 @@ public class MovieListServlet extends HttpServlet {
                 query.append("ORDER BY m.title ASC, r.rating ASC ");
                 break;
         }
-
         query.append("LIMIT ? OFFSET ?;");
-//        LOGGER.info(query.toString());
         try(Connection connection = ds.getConnection()){
             PreparedStatement ps = connection.prepareStatement(query.toString());
+            LOGGER.info("Executing query: " + ps.toString());
             int index = 1;
-            if ("search".equals(browseFlag)) {
+
+            if (fullTextSearch && title != null && !title.isEmpty()) {
+                String[] tokens = title.trim().toLowerCase().split("\\s+");
+                StringBuilder booleanQuery = new StringBuilder();
+                for (String token : tokens) {
+                    if (booleanQuery.length() > 0) booleanQuery.append(" ");
+                    booleanQuery.append("+").append(token).append("*");
+                }
+                int maxEditDistance = Math.max(1, title.length() / 4);
+
+                ps.setString(index++, booleanQuery.toString());
+                ps.setString(index++, "%" + title + "%");
+                ps.setString(index++, title);
+                ps.setInt(index++, maxEditDistance);
+            } else if ("search".equals(browseFlag)) {
                 if (title != null && !title.isEmpty()) {
                     ps.setString(index++, "%" + title + "%");
                 }

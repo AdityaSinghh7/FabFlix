@@ -160,3 +160,114 @@ body.dark-mode #dark-mode-toggle {
 body.dark-mode #dark-mode-toggle:hover {
     background-color: #FF5C58;
 }
+
+.search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+#search-bar {
+    width: 70%;
+    padding: 12px 20px;
+    font-size: 1rem;
+    border: 2px solid #D60E0A;
+    border-radius: 8px 0 0 8px;
+    outline: none;
+    transition: box-shadow 0.3s, border-color 0.3s;
+}
+
+#search-bar:focus {
+    box-shadow: 0 0 10px #D60E0A;
+    border-color: #FF5C58;
+}
+
+.search-button {
+    padding: 10px 20px;
+    background-color: #D60E0A;
+    border: 2px solid #D60E0A;
+    border-radius: 0 8px 8px 0;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.search-button:hover {
+    background-color: #FF5C58;
+}
+
+.search-icon {
+    width: 20px;
+    height: 20px;
+}
+
+body.dark-mode #search-bar {
+    background-color: #14110F;
+    color: #FFE6E8;
+    border-color: #FFE6E8;
+}
+
+body.dark-mode #search-bar:focus {
+    box-shadow: 0 0 10px #FF5C58;
+    border-color: #D60E0A;
+}
+
+body.dark-mode .search-button {
+    background-color: #D60E0A;
+    border-color: #D60E0A;
+}
+
+body.dark-mode .search-button:hover {
+    background-color: #FF5C58;
+}
+
+.autocomplete-suggestions {
+    border: 2px solid #D60E0A;
+    background: #FFE6E8;
+    color: #14110F;
+    overflow: auto;
+    max-height: 200px;
+    z-index: 1000;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.autocomplete-suggestion {
+    padding: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.autocomplete-suggestion:hover, .autocomplete-selected {
+    background: #D60E0A;
+    color: #FFE6E8;
+}
+
+.autocomplete-suggestions strong {
+    font-weight: bold;
+    color: #D60E0A;
+}
+
+/* Dark mode adjustments */
+body.dark-mode .autocomplete-suggestions {
+    background: #14110F;
+    color: #FFE6E8;
+    border-color: #FFE6E8;
+}
+
+body.dark-mode .autocomplete-suggestion {
+    color: #FFE6E8;
+}
+
+body.dark-mode .autocomplete-suggestion:hover, body.dark-mode .autocomplete-selected {
+    background: #FF5C58;
+    color: #14110F;
+}
+
+body.dark-mode .autocomplete-suggestions strong {
+    color: lightgreen;
+}

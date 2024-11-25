@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function toggleDarkMode() {
         document.body.classList.toggle('dark-mode');
-        // Save the preference to localStorage
         const logo = document.querySelector('.fabflix-logo');
         if (document.body.classList.contains('dark-mode')) {
             logo.src = "../Images/FabFlix-darkMode.svg";

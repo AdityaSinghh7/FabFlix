@@ -10,6 +10,7 @@
 <body>
 <button id="back-to-search" class="navigation-button">Back to Search Page</button>
 <button id="back-to-browse" class="navigation-button">Back to Browse Page</button>
+<button id="logout-button" class="navigation-button">Logout</button>
 <button id="cart-button" class="navigation-button">Checkout</button>
 
 <button id="dark-mode-toggle">Toggle Theme</button>
@@ -51,10 +52,14 @@
 <script>
     $(document).ready(function() {
         $('#back-to-search').click(function() {
-            window.location.href = '../SearchPage/searchPage.html';
+            window.location.href = '../MainPage/mainPage.html';
+            sessionStorage.removeItem('pageNumber');
+            sessionStorage.removeItem('fullTextSearch');
         });
         $('#back-to-browse').click(function() {
             window.location.href = '../BrowsePage/browsePage.html';
+            sessionStorage.removeItem('pageNumber');
+            sessionStorage.removeItem('fullTextSearch');
         });
         $('#cart-button').click(function() {
             window.location.href = '../CartPage/cartPage.html';

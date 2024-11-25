@@ -13,7 +13,7 @@ public class LogoutServlet extends HttpServlet {
         if (session != null) {
             session.invalidate();
         }
-
+        response.sendRedirect("../static/LoginPage/loginPage.html");
         response.setStatus(HttpServletResponse.SC_OK);
     }
 }

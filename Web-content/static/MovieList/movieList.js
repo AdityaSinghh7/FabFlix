@@ -9,6 +9,7 @@ const yearInt = year ? parseInt(year) : "";
 const browseFlag = sessionStorage.getItem('browseFlag') || "";
 const genre = sessionStorage.getItem('genre') || "";
 const titleStart = sessionStorage.getItem('titleStart') || "";
+const fullTextSearch = sessionStorage.getItem('fullTextSearch') === 'true';
 
 
 function fetchMovies(){
@@ -28,7 +29,8 @@ function fetchMovies(){
             queriesPerPage: pageSize,
             browseFlag: browseFlag,
             genre: genre,
-            titleStart: titleStart
+            titleStart: titleStart,
+            fullTextSearch: fullTextSearch
         },
         success: (resultData) => {
             handleMovieListResult(resultData);
@@ -63,7 +65,7 @@ function handlePageSizeChange() {
 }
 
 function handleMovieListResult(resultData){
-    console.log("handleMovieListResult: populating...")
+    // console.log("handleMovieListResult: populating...")
 
     let movieTableBody = jQuery("#movie_table_body");
     movieTableBody.empty();
@@ -138,6 +140,7 @@ function handlePageChange(nextPage) {
     if (nextPage >= 1) {
         currentPage = nextPage;
         sessionStorage.setItem('pageNumber', currentPage);
+        sessionStorage.setItem('fullTextSearch', fullTextSearch);
         fetchMovies();
     }
 }
