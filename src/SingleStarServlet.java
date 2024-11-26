@@ -21,7 +21,7 @@ public class SingleStarServlet extends HttpServlet{
     public void init() throws ServletException {
         try {
 
-            ds = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb");
+            ds = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/readconnect");
             if (ds != null) {
                 logger.info("DataSource initialized successfully");
             } else {

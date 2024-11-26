@@ -25,7 +25,7 @@ public class PlaceOrderServlet extends HttpServlet {
     public void init() {
         try {
 
-            ds = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb");
+            ds = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/writeconnect");
             if (ds != null) {
                 LOGGER.info("DataSource initialized successfully");
             } else {

@@ -24,7 +24,7 @@ public class GetAllGenres extends HttpServlet {
 
     public void init() throws ServletException {
         try {
-            ds = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb");
+            ds = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/readconnect");
             if (ds != null) {
                 LOGGER.info("DataSource initialized successfully");
             } else {

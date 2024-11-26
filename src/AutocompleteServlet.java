@@ -19,7 +19,7 @@ public class AutocompleteServlet extends HttpServlet {
 
     public void init() {
         try {
-            ds = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb");
+            ds = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/readconnect");
         } catch (NamingException e) {
             e.printStackTrace();
         }

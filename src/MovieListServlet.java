@@ -23,7 +23,7 @@ public class MovieListServlet extends HttpServlet {
     public void init() {
         try {
 
-            ds = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb");
+            ds = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/readconnect");
             if (ds != null) {
                 LOGGER.info("DataSource initialized successfully");
             } else {

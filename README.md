@@ -1,127 +1,63 @@
-# FabFlix Project - Project 3
+- # General
+  - #### Team#: cs122b-aditya
 
-## Overview **Project3 is on this branch (project3-branch)**
-FabFlix is a dynamic web application that provides users with detailed movie and star information. Building upon Project 2, this iteration focuses on improving security, performance, and extending functionality using **reCAPTCHA**, **HTTPS**, **encrypted passwords**, **prepared statements**, and **stored procedures** for enhanced database interactions.
+  - #### Names: Aditya Dev Singh (id: 67083916)
 
-### New Features Implemented in Project 3:
-- **reCAPTCHA Integration**: Improved user authentication with Google's reCAPTCHA to distinguish between humans and bots on the login page.
-- **HTTPS Implementation**: Enabled secure data transfer by configuring Tomcat for HTTPS connections, ensuring client-server communication is encrypted.
-- **Prepared Statements**: Transitioned all SQL queries to use `PreparedStatement` to prevent SQL Injection attacks and ensure parameterized execution.
-- **Encrypted Passwords**: Updated customer passwords in the database to be securely stored using encryption. Server-side logic verifies plain-text input against encrypted values.
-- **Employee Dashboard**: Added a secure HTTPS endpoint for employees with operations such as:
-  - Adding new stars.
-  - Viewing database metadata.
-  - Adding new movies via a stored procedure (`add_movie`) that handles the creation and linking of related records (e.g., stars, genres).
+  - #### Project 5 Video Demo Link: https://youtu.be/9VrX34c7J4M
 
-### XML Parsing & Data Insertion:
-- **XML Parsing**: Developed a Java parser to process new movie data from `mains243.xml` and `casts124.xml`. New data is inserted into the existing Fabflix database, with updates to `stars_in_movies` and `genres_in_movies` tables as needed.
-- **Performance Optimizations**: Implemented two optimization techniques (beyond disabling auto-commit and using `PreparedStatement`) to improve XML parsing and insertion efficiency. Details are provided in the performance report.
+  - #### Instruction of deployment: Perform mvn clean package in the directory where pom.xml is located, copy .war generated in target/ to tomcat10/webapps/ directory.
 
-### Inconsistencies Report:
-Generated reports for data inconsistencies encountered during parsing:
-- `actors_inconsistencies.txt`
-- `casts_inconsistencies.txt`
-- `movies_inconsistencies.txt`
-
-# Optimization Report
-
-This report outlines the optimizations implemented in my data parsing and database insertion process, 
-highlighting the corresponding time reductions. 
-These optimizations significantly enhance performance compared to a naive implementation.
-
-## Optimizations Implemented
-
-1. **Batched Database Processing**
-2. **Multithreading for Parallel Parsing**
-
----
-
-### 1. Batched Database Processing
-
-**Files Involved:**
-
-- `MoviesHandler.java`
-- `CastsHandler.java`
-- `ActorsHandler.java`
-
-**Description:**
-
-- Implemented batch processing using JDBC's batch operations (`addBatch()` and `executeBatch()`).
-- Batch size set to 500 operations for optimal performance.
-- Reduces the number of database transactions by grouping multiple insertions.
-
-**Benefits:**
-
-- **Reduced Network Overhead:** Fewer database connections and transactions.
-- **Improved Throughput:** Bulk insertions are faster than individual ones.
-
----
-
-### 2. Multithreading for Parallel Parsing
-
-**Files Involved:**
-
-- `ParseAll.java`
-
-**Description:**
-
-- Utilized multithreading to parse multiple XML files concurrently.
-- Implemented using Java's `ExecutorService` with a fixed thread pool.
-- Ensured thread safety when accessing shared resources like database connections.
-
-**Benefits:**
-
-- **Concurrent Execution:** Multiple files processed simultaneously.
-- **Better CPU Utilization:** Exploits multi-core processors.
-
----
-
-## Efficiency Over Naive Method
-
-**Naive Method Characteristics:**
-
-- Single-threaded execution.
-- Individual `INSERT` statements for each record.
-
-**Disadvantages of Naive Method:**
-
-- High network and database overhead.
-- Underutilization of system resources.
-- Longer processing times.
-
-**Optimized Approach Advantages:**
-
-- **Efficient Resource Utilization:** Better use of CPU and network.
-- **Scalability:** Handles larger datasets more effectively.
-
----
-
-### Files Using Prepared Statements
-
-The following files have been updated to utilize `PreparedStatement` for all database interactions, enhancing security by preventing SQL injection attacks and ensuring parameterized query execution:
-
-- `DashboardLogin.java`
-- `GetMeta.java`
-- `LogoutServlet.java`
-- `ParseAll.java`
-- `RecaptchaVerify.java`
-- `SingleStarServlet.java`
-- `AddMovieServlet.java`
-- `DashboardServlet.java`
-- `InsertStarServlet.java`
-- `MovieListServlet.java`
-- `PlaceOrderServlet.java`
-- `GetAllGenres.java`
-- `LoginPageServlet.java`
-- `SingleMovieServlet.java`
-
-This implementation ensures that all SQL queries are safely constructed and executed with proper parameters, providing an additional layer of security and robustness to the FabFlix project.
-
-## Video Link:
-- * https://youtu.be/M39iQgEAY94
+  - #### Collaborations and Work Distribution: Single member team
 
 
-## Group Members
-- **Name**: Aditya Dev Singh  
-  **UCI ID**: 67083916  
-  **Email**: adityads@uci.edu
+- # Connection Pooling
+  - #### Include the filename/path of all code/configuration files in GitHub of using JDBC Connection Pooling.
+    - ##### source code:
+      - `src/AddMovieServlet.java` - Adding movies.
+      - `src/AutocompleteServlet.java` - Autocomplete for movie titles.
+      - `src/DashboardLogin.java` - Admin dashboard login.
+      - `src/GetAllGenres.java` - Retrieve genres.
+      - `src/GetMeta.java` - Fetch database metadata.
+      - `src/InsertStarServlet.java` - Insert a new star.
+      - `src/LoginPageServlet.java` - Customer login.
+      - `src/MovieListServlet.java` - Movie search and browse.
+      - `src/PlaceOrderServlet.java` - Process customer orders.
+      - `src/SingleMovieServlet.java` - Details for a single movie.
+      - `src/SingleStarServlet.java` - Details for a single star.
+    - #### config file: 
+      - `Web-content/META-INF/context,xml` - setup master/slave database connections & JDBC pooling. 
+
+    - #### Explain how Connection Pooling is utilized in the Fabflix code.
+      - Connection pooling is configured in the context.xml file, where jdbc/readconnect and jdbc/writeconnect 
+      resources are defined with parameters like maxTotal, maxIdle, and maxWaitMillis. Each servlet initializes a DataSource using JNDI lookup, 
+      allowing it to reuse connections from the pool.
+
+    - #### Explain how Connection Pooling works with two backend SQL.
+      - The context.xml defines two separate resources:
+        - jdbc/readconnect for read operations, configured to point to either a single Slave MySQL instance or a load-balanced pool of Slave and Master instances.
+        - jdbc/writeconnect for write operations, explicitly pointing to the Master MySQL instance.
+
+
+- # Master/Slave
+  - #### Include the filename/path of all code/configuration files in GitHub of routing queries to Master/Slave SQL.
+    - java code:
+      - `src/AddMovieServlet.java` - Write operations routed to the Master.
+      - `src/InsertStarServlet.java` - Write operations routed to the Master.
+      - `src/PlaceOrderServlet.java` - Write operations routed to the Master.
+      - `src/AutocompleteServlet.java` - Read operations routed to Master/Slave.
+      - `src/GetAllGenres.java` - Read operations routed to Master/Slave.
+      - `src/GetMeta.java` - Read operations routed to Master/Slave.
+      - `src/MovieListServlet.java` - Read operations routed to Master/Slave.
+      - `src/SingleMovieServlet.java` - Read operations routed to Master/Slave.
+      - `src/SingleStarServlet.java` - Read operations routed to Master/Slave.
+    - Config files:
+      - `WebContent/WEB-INF/context.xml` - Configures jdbc/readconnect for reads and jdbc/writeconnect for writes, routing queries to the 
+      appropriate Master or Slave SQL instance.
+
+  - #### How read/write requests were routed to Master/Slave SQL?
+    - Setup in context.xml:
+      - jdbc/readconnect is configured to connect to the Slave MySQL instance or a load-balanced pool of Master and Slave for read requests.
+      - jdbc/writeconnect is configured to connect directly to the Master MySQL instance for write requests.
+    - Servlet-Specific Routing:
+      - Write Requests: Servlets that perform write operations, such as AddMovieServlet, InsertStarServlet, and PlaceOrderServlet, use ```"java:comp/env/jdbc/writeconnect"```
+      - Read Requests: Servlets that perform read operations, such as MovieListServlet, GetAllGenres, and AutocompleteServlet, use ```"java:comp/env/jdbc/readconnect"```
