@@ -61,3 +61,10 @@
     - Servlet-Specific Routing:
       - Write Requests: Servlets that perform write operations, such as AddMovieServlet, InsertStarServlet, and PlaceOrderServlet, use ```"java:comp/env/jdbc/writeconnect"```
       - Read Requests: Servlets that perform read operations, such as MovieListServlet, GetAllGenres, and AutocompleteServlet, use ```"java:comp/env/jdbc/readconnect"```
+  - #### FUZZY SEARCH (EXTRA CREDIT) - IMPLEMENTED:
+    - The fuzzy search combines results from:
+      - SQL LIKE Pattern Matching: Matches substrings in movie titles using %query%.
+      - Levenshtein (Edit Distance) Algorithm: Uses the edth function from the Flamingo library to find movies with titles similar to the query, within a specified edit distance.
+    - Dynamic Edit Distance: The maximum allowable edit distance is calculated as query.length() / 4 (at least 25% error allowed), ensuring a balance between flexibility and precision.
+    - The SQL query retrieves movies that match either the LIKE pattern, a full-text match, or fall within the specified edit distance
+    - I compiled and added The edth.c file from the Flamingo library to MySQL as a user-defined function, using ```CREATE FUNCTION edth RETURNS INTEGER SONAME 'libedth.so';```
