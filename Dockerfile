@@ -10,7 +10,7 @@ FROM tomcat:10-jdk11
 
 WORKDIR /app
 
-COPY --from=builder /app/target/FabFlix.war /usr/local/tomcat10/webapps/FabFlix.war
+COPY --from=builder /app/target/FabFlix.war /usr/local/tomcat/webapps/FabFlix.war
 
 EXPOSE 8080
 
