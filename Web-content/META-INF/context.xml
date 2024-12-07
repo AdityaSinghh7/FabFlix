@@ -10,7 +10,7 @@
               maxTotal="100" maxIdle="30" maxWaitMillis="10000"
               username="root"
               password="mypassword"
-              url="jdbc:mysql://localhost:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;cachePrepStmts=true"/>
+              url="jdbc:mysql://host.docker.internal:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;cachePrepStmts=true"/>
     <Resource name="jdbc/writeconnect"
               auth="Container"
               driverClassName="com.mysql.cj.jdbc.Driver"
@@ -19,7 +19,7 @@
               maxTotal="100" maxIdle="30" maxWaitMillis="10000"
               username="root"
               password="mypassword"
-              url="jdbc:mysql://localhost:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;cachePrepStmts=true"/>
+              url="jdbc:mysql://host.docker.internal:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;cachePrepStmts=true"/>
     <Environment name="DB_ENV" value="prod" type="java.lang.String"/>
     <Resource name="jdbc/writeconnect"
               auth="Container"
@@ -29,7 +29,7 @@
               maxTotal="100" maxIdle="30" maxWaitMillis="10000"
               username="root"
               password="mypassword"
-              url="jdbc:mysql://172.31.16.109:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;cachePrepStmts=true"/>
+              url="jdbc:mysql://host.docker.internal:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;cachePrepStmts=true"/>
     <Resource name="jdbc/readconnect"
               auth="Container"
               driverClassName="com.mysql.cj.jdbc.Driver"
@@ -38,5 +38,5 @@
               maxTotal="100" maxIdle="30" maxWaitMillis="10000"
               username="root"
               password="mypassword"
-              url="jdbc:mysql://172.31.27.211:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;cachePrepStmts=true"/>
+              url="jdbc:mysql://host.docker.internal:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;cachePrepStmts=true"/>
 </Context>
