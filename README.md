@@ -1,17 +1,16 @@
-- # General
-  - #### Team#: cs122b-aditya
+- # General - Project5-branch:
+  - # Team#: aditya-cs122b
 
-  - #### Names: Aditya Dev Singh (id: 67083916)
+  - # Names: Aditya Dev Singh (id: 67083916)
 
-  - #### Project 5 Video Demo Link: https://youtu.be/9VrX34c7J4M
+  - # Project 5 Video Demo Link: https://youtu.be/qTBDZT4YJ7Q
 
-  - #### Instruction of deployment: Perform mvn clean package in the directory where pom.xml is located, copy .war generated in target/ to tomcat10/webapps/ directory.
+  - # Throughput for 1st configuration (1 Control Plane + 3 Worker nodes + 1 master MySQL pod + 1 slave MySQL pod + 2 Fabflix pods): **_295.3/sec_**
 
-  - #### Collaborations and Work Distribution: Single member team
+  - # Throughput for 2nd configuration (1 Control Plane + 4 Worker nodes + 1 master MySQL pod + 1 slave MySQL pod + 3 Fabflix pods): **_9.1/sec_**
 
 
-- # Connection Pooling
-  - #### Include the filename/path of all code/configuration files in GitHub of using JDBC Connection Pooling.
+- ### Full Project Overview:
     - ##### source code:
       - `src/AddMovieServlet.java` - Adding movies.
       - `src/AutocompleteServlet.java` - Autocomplete for movie titles.
@@ -24,47 +23,23 @@
       - `src/PlaceOrderServlet.java` - Process customer orders.
       - `src/SingleMovieServlet.java` - Details for a single movie.
       - `src/SingleStarServlet.java` - Details for a single star.
-    - #### config file: 
-      - `Web-content/META-INF/context,xml` - setup master/slave database connections & JDBC pooling. 
+      - + Frontend in html/css and javascript for calling backend API
+    - #### config files: 
+      - `Web-content/META-INF/context.xml` - setup master/slave database connections & JDBC pooling.
+      - `Dockerfile` - builds and packages the application using Maven, deploys it on a Tomcat server, and exposes it on port 8080 for runtime access.
+      - `fabflix-movies.yaml` - Kubernetes YAML file defines a Deployment with 2 replicas for the FabFlix application and a ClusterIP Service to expose it internally on port 8080.
+      - `ingress.yaml` - Ingress.yaml configures NGINX to route requests to the FabFlix service on port 8080 with sticky sessions using cookies for consistent client-server connections.
 
-    - #### Explain how Connection Pooling is utilized in the Fabflix code.
-      - Connection pooling is configured in the context.xml file, where jdbc/readconnect and jdbc/writeconnect 
-      resources are defined with parameters like maxTotal, maxIdle, and maxWaitMillis. Each servlet initializes a DataSource using JNDI lookup, 
-      allowing it to reuse connections from the pool.
+- ### Deployment overview:
+  - #### Docker + Kubernetes
+      - This project deploys the FabFlix application on a Kubernetes cluster hosted on AWS. It involves setting up an EC2 instance for cluster management, 
+        creating and scaling the cluster with kOps, configuring MySQL master-slave replication using Helm, deploying the application with Kubernetes manifests, 
+        and exposing it via an Ingress controller with sticky sessions for seamless client interaction.
 
-    - #### Explain how Connection Pooling works with two backend SQL.
-      - The context.xml defines two separate resources:
-        - jdbc/readconnect for read operations, configured to point to either a single Slave MySQL instance or a load-balanced pool of Slave and Master instances.
-        - jdbc/writeconnect for write operations, explicitly pointing to the Master MySQL instance.
-
-
-- # Master/Slave
-  - #### Include the filename/path of all code/configuration files in GitHub of routing queries to Master/Slave SQL.
-    - java code:
-      - `src/AddMovieServlet.java` - Write operations routed to the Master.
-      - `src/InsertStarServlet.java` - Write operations routed to the Master.
-      - `src/PlaceOrderServlet.java` - Write operations routed to the Master.
-      - `src/AutocompleteServlet.java` - Read operations routed to Master/Slave.
-      - `src/GetAllGenres.java` - Read operations routed to Master/Slave.
-      - `src/GetMeta.java` - Read operations routed to Master/Slave.
-      - `src/MovieListServlet.java` - Read operations routed to Master/Slave.
-      - `src/SingleMovieServlet.java` - Read operations routed to Master/Slave.
-      - `src/SingleStarServlet.java` - Read operations routed to Master/Slave.
-    - Config files:
-      - `WebContent/WEB-INF/context.xml` - Configures jdbc/readconnect for reads and jdbc/writeconnect for writes, routing queries to the 
-      appropriate Master or Slave SQL instance.
-
-  - #### How read/write requests were routed to Master/Slave SQL?
-    - Setup in context.xml:
-      - jdbc/readconnect is configured to connect to the Slave MySQL instance or a load-balanced pool of Master and Slave for read requests.
-      - jdbc/writeconnect is configured to connect directly to the Master MySQL instance for write requests.
-    - Servlet-Specific Routing:
-      - Write Requests: Servlets that perform write operations, such as AddMovieServlet, InsertStarServlet, and PlaceOrderServlet, use ```"java:comp/env/jdbc/writeconnect"```
-      - Read Requests: Servlets that perform read operations, such as MovieListServlet, GetAllGenres, and AutocompleteServlet, use ```"java:comp/env/jdbc/readconnect"```
-  - #### FUZZY SEARCH (EXTRA CREDIT) - IMPLEMENTED:
-    - The fuzzy search combines results from:
-      - SQL LIKE Pattern Matching: Matches substrings in movie titles using %query%.
-      - Levenshtein (Edit Distance) Algorithm: Uses the edth function from the Flamingo library to find movies with titles similar to the query, within a specified edit distance.
-    - Dynamic Edit Distance: The maximum allowable edit distance is calculated as query.length() / 4 (at least 25% error allowed), ensuring a balance between flexibility and precision.
-    - The SQL query retrieves movies that match either the LIKE pattern, a full-text match, or fall within the specified edit distance
-    - I compiled and added The edth.c file from the Flamingo library to MySQL as a user-defined function, using ```CREATE FUNCTION edth RETURNS INTEGER SONAME 'libedth.so';```
+- ### ApacheJMeter Testing:
+  - Stress testing for the application was conducted using JMeter to evaluate its performance on the Kubernetes cluster. The test employed 10 threads, 
+    each logging in and repeatedly sending search requests with movie titles from query_load.txt. 
+    The cluster was configured with 1 control plane, 3 worker nodes, 1 master MySQL pod, 1 slave MySQL pod, and 2 Fabflix pods, 
+    then re-tested with 4 worker nodes and 3 Fabflix pods. 
+    Throughput metrics were collected from the command line using ``` ./jmeter -n -t FabFlix-Test.jmx -l results2.jtl -e -o /Users/adityasingh/Throughput/ ``` and then
+    putting the results2.jtl file into the report aggregator on JMeter to calculate throughput values for both configurations. 
