@@ -31,7 +31,7 @@
             <label for="password">Password</label>
             <input type="password" id="password" name="password" required>
         </div>
-        <div class="g-recaptcha" data-sitekey="6LdBEnoqAAAAAKuYFB-CYjdLnu0H7sj3ezdMmjKm"></div>
+<!--        <div class="g-recaptcha" data-sitekey="6LdBEnoqAAAAAKuYFB-CYjdLnu0H7sj3ezdMmjKm"></div>-->
         <button type="submit" class="login-button">Log In</button>
     </form>
 
@@ -49,13 +49,13 @@
             const email = $('#email').val();
             const password = $('#password').val();
             const errorMessageDiv = $('#error-message');
-            const recaptchaResponse = grecaptcha.getResponse();
+            // const recaptchaResponse = grecaptcha.getResponse();
 
-            if (recaptchaResponse === "") {
-                errorMessageDiv.text("Please complete the reCAPTCHA").show();
-                grecaptcha.reset();
-                return;
-            }
+            // if (recaptchaResponse === "") {
+            //     errorMessageDiv.text("Please complete the reCAPTCHA").show();
+            //     grecaptcha.reset();
+            //     return;
+            // }
 
             $.ajax({
                 url: '../../api/login',
@@ -63,13 +63,13 @@
                 data: {
                     email: email,
                     password: password,
-                    'g-recaptcha-response': recaptchaResponse
+                    // 'g-recaptcha-response': recaptchaResponse
                 },
                 success: function(response) {
                     console.log(response);
                     if (response.status === 'error') {
                         errorMessageDiv.text(response.message).show();
-                        grecaptcha.reset();
+                        // grecaptcha.reset();
                     } else {
                         sessionStorage.setItem('customerId', response.customerId);
                         window.location.href = '../MainPage/mainPage.html';
@@ -77,7 +77,7 @@
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     errorMessageDiv.text('An error occurred. Please try again.').show();
-                    grecaptcha.reset();
+                    // grecaptcha.reset();
                 }
             });
         });
