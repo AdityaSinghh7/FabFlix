@@ -71,7 +71,7 @@ public class MovieListServlet extends HttpServlet {
         if (fullTextSearch && title != null && !title.isEmpty()) {
             query.append("WHERE MATCH(m.title) AGAINST(? IN BOOLEAN MODE) ");
             query.append("   OR LOWER(m.title) LIKE LOWER(?) ");
-            query.append("   OR edth(LOWER(m.title), LOWER(?), ?) ");
+//            query.append("   OR edth(LOWER(m.title), LOWER(?), ?) ");
             hasPreviousCondition = true;
         }
         else if ("search".equals(browseFlag)) {
@@ -153,12 +153,12 @@ public class MovieListServlet extends HttpServlet {
                     if (booleanQuery.length() > 0) booleanQuery.append(" ");
                     booleanQuery.append("+").append(token).append("*");
                 }
-                int maxEditDistance = Math.max(1, title.length() / 4);
+//                int maxEditDistance = Math.max(1, title.length() / 4);
 
                 ps.setString(index++, booleanQuery.toString());
-                ps.setString(index++, "%" + title + "%");
-                ps.setString(index++, title);
-                ps.setInt(index++, maxEditDistance);
+                ps.setString(index++,title + "%");
+//                ps.setString(index++, title);
+//                ps.setInt(index++, maxEditDistance);
             } else if ("search".equals(browseFlag)) {
                 if (title != null && !title.isEmpty()) {
                     ps.setString(index++, "%" + title + "%");

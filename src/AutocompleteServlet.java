@@ -46,19 +46,19 @@ public class AutocompleteServlet extends HttpServlet {
             booleanQuery.append("+").append(token).append("*");
         }
 
-        String sql = "SELECT id, title FROM movies WHERE MATCH(title) AGAINST(? IN BOOLEAN MODE) OR LOWER(title) LIKE LOWER(?) OR " +
-                " edth(LOWER(title), LOWER(?), ?)  LIMIT 10";
+        String sql = "SELECT id, title FROM movies WHERE MATCH(title) AGAINST(? IN BOOLEAN MODE) OR LOWER(title) LIKE LOWER(?) " +
+                "LIMIT 10";
 
         try (Connection connection = ds.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
             LOGGER.info("Executing query: " + ps.toString());
 
-            int maxEditDistance = Math.max(1, query.length() / 4);
+//            int maxEditDistance = Math.max(1, query.length() / 4);
 
             ps.setString(1, booleanQuery.toString());
-            ps.setString(2, "%" + query + "%");
-            ps.setString(3, query);
-            ps.setInt(4, maxEditDistance);
+            ps.setString(2,query + "%");
+//            ps.setString(3, query);
+//            ps.setInt(4, maxEditDistance);
             ResultSet rs = ps.executeQuery();
 
             StringBuilder jsonResult = new StringBuilder("[");
